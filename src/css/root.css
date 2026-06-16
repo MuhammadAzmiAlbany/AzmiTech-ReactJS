@@ -1,0 +1,75 @@
+/* ============================================================
+   SECTION: THEME COLOR PALETTES
+   — Light uses WHITE palette, Dark uses BLACK palette.
+   — Change only the hex values here; everything else cascades.
+============================================================ */
+:root {
+    /* LIGHT THEME — WHITE palette */
+    --l-bg: #fffcf2;
+    /* page & card background       */
+    --l-surface: #f0ebe1;
+    /* sidebar panels, hover rows   */
+    --l-text-hi: #252422;
+    /* headings, strong content     */
+    --l-text: #403d39;
+    /* body copy                    */
+    --l-text-lo: #9e9484;
+    /* muted labels, hints          */
+    --l-accent: #eb5e28;
+    /* primary action / highlight   */
+    --l-accent-dk: #c94d1e;
+    /* accent on hover / pressed    */
+    --l-accent-gl: rgba(235, 94, 40, .13);
+    /* glow / focus ring  */
+    --l-border: #d9d1c5;
+    /* dividers, input borders      */
+    --l-border-hi: #bdb3a5;
+    /* stronger borders             */
+    --l-shadow-sm: rgba(37, 36, 34, .07);
+    --l-shadow-md: rgba(37, 36, 34, .13);
+    --l-sidebar-bg: #1e1c19;
+    /* sidebar (always dark)        */
+    --l-sidebar-txt: #b8b0a4;
+    /* inactive nav items           */
+    --l-sidebar-act: #eb5e28;
+    /* active nav item colour       */
+    --l-topbar-bg: #fffcf2;
+    --l-footer-bg: #1e1c19;
+    --l-footer-txt: #b8b0a4;
+    --l-input-bg: #fffcf2;
+    --l-input-bdr: #d9d1c5;
+    --l-input-fcs: #eb5e28;
+}
+
+:root {
+    /* DARK THEME — BLACK palette */
+    --d-bg: #000814;
+    /* page background              */
+    --d-surface: #001029;
+    /* subtle lift                  */
+    --d-text-hi: #ffd60a;
+    /* primary text (bright yellow) */
+    --d-text: #ffc300;
+    /* body text (golden yellow)    */
+    --d-text-lo: #304d6e;
+    /* muted hints                  */
+    --d-accent: #ffc300;
+    /* primary action               */
+    --d-accent-dk: #ffd60a;
+    /* accent hover                 */
+    --d-accent-gl: rgba(255, 195, 0, .13);
+    --d-border: #002050;
+    /* dividers                     */
+    --d-border-hi: #003566;
+    --d-shadow-sm: rgba(0, 0, 0, .35);
+    --d-shadow-md: rgba(0, 0, 0, .55);
+    --d-sidebar-bg: #000814;
+    --d-sidebar-txt: #3d6899;
+    --d-sidebar-act: #ffc300;
+    --d-topbar-bg: #000814;
+    --d-footer-bg: #000814;
+    --d-footer-txt: #ffc300;
+    --d-input-bg: #000814;
+    --d-input-bdr: #002050;
+    --d-input-fcs: #ffc300;
+}

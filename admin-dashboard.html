@@ -1,0 +1,3930 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>AdminDash</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    /* ============================================================
+   SECTION: THEME COLOR PALETTES
+   — Light uses WHITE palette, Dark uses BLACK palette.
+   — Change only the hex values here; everything else cascades.
+============================================================ */
+    :root {
+      /* LIGHT THEME — WHITE palette */
+      --l-bg: #fffcf2;
+      /* page & card background       */
+      --l-surface: #f0ebe1;
+      /* sidebar panels, hover rows   */
+      --l-text-hi: #252422;
+      /* headings, strong content     */
+      --l-text: #403d39;
+      /* body copy                    */
+      --l-text-lo: #9e9484;
+      /* muted labels, hints          */
+      --l-accent: #eb5e28;
+      /* primary action / highlight   */
+      --l-accent-dk: #c94d1e;
+      /* accent on hover / pressed    */
+      --l-accent-gl: rgba(235, 94, 40, .13);
+      /* glow / focus ring  */
+      --l-border: #d9d1c5;
+      /* dividers, input borders      */
+      --l-border-hi: #bdb3a5;
+      /* stronger borders             */
+      --l-shadow-sm: rgba(37, 36, 34, .07);
+      --l-shadow-md: rgba(37, 36, 34, .13);
+      --l-sidebar-bg: #1e1c19;
+      /* sidebar (always dark)        */
+      --l-sidebar-txt: #b8b0a4;
+      /* inactive nav items           */
+      --l-sidebar-act: #eb5e28;
+      /* active nav item colour       */
+      --l-topbar-bg: #fffcf2;
+      --l-footer-bg: #1e1c19;
+      --l-footer-txt: #b8b0a4;
+      --l-input-bg: #fffcf2;
+      --l-input-bdr: #d9d1c5;
+      --l-input-fcs: #eb5e28;
+    }
+
+    :root {
+      /* DARK THEME — BLACK palette */
+      --d-bg: #000814;
+      /* page background              */
+      --d-surface: #001029;
+      /* subtle lift                  */
+      --d-text-hi: #ffd60a;
+      /* primary text (bright yellow) */
+      --d-text: #ffc300;
+      /* body text (golden yellow)    */
+      --d-text-lo: #304d6e;
+      /* muted hints                  */
+      --d-accent: #ffc300;
+      /* primary action               */
+      --d-accent-dk: #ffd60a;
+      /* accent hover                 */
+      --d-accent-gl: rgba(255, 195, 0, .13);
+      --d-border: #002050;
+      /* dividers                     */
+      --d-border-hi: #003566;
+      --d-shadow-sm: rgba(0, 0, 0, .35);
+      --d-shadow-md: rgba(0, 0, 0, .55);
+      --d-sidebar-bg: #000814;
+      --d-sidebar-txt: #3d6899;
+      --d-sidebar-act: #ffc300;
+      --d-topbar-bg: #000814;
+      --d-footer-bg: #000814;
+      --d-footer-txt: #ffc300;
+      --d-input-bg: #000814;
+      --d-input-bdr: #002050;
+      --d-input-fcs: #ffc300;
+    }
+
+    /* ============================================================
+   SECTION: ACTIVE THEME MAPPING
+   Maps semantic tokens to whichever palette is active.
+============================================================ */
+    [data-theme="light"] {
+      --bg: var(--l-bg);
+      --surface: var(--l-surface);
+      --text-hi: var(--l-text-hi);
+      --text: var(--l-text);
+      --text-lo: var(--l-text-lo);
+      --accent: var(--l-accent);
+      --accent-dk: var(--l-accent-dk);
+      --accent-gl: var(--l-accent-gl);
+      --border: var(--l-border);
+      --border-hi: var(--l-border-hi);
+      --shadow-sm: var(--l-shadow-sm);
+      --shadow-md: var(--l-shadow-md);
+      --sidebar-bg: var(--l-sidebar-bg);
+      --sidebar-txt: var(--l-sidebar-txt);
+      --sidebar-act: var(--l-sidebar-act);
+      --topbar-bg: var(--l-topbar-bg);
+      --footer-bg: var(--l-footer-bg);
+      --footer-txt: var(--l-footer-txt);
+      --input-bg: var(--l-input-bg);
+      --input-bdr: var(--l-input-bdr);
+      --input-fcs: var(--l-input-fcs);
+      --card-bg: var(--l-bg);
+    }
+
+    [data-theme="dark"] {
+      --bg: var(--d-bg);
+      --surface: var(--d-surface);
+      --text-hi: var(--d-text-hi);
+      --text: var(--d-text);
+      --text-lo: var(--d-text-lo);
+      --accent: var(--d-accent);
+      --accent-dk: var(--d-accent-dk);
+      --accent-gl: var(--d-accent-gl);
+      --border: var(--d-border);
+      --border-hi: var(--d-border-hi);
+      --shadow-sm: var(--d-shadow-sm);
+      --shadow-md: var(--d-shadow-md);
+      --sidebar-bg: var(--d-sidebar-bg);
+      --sidebar-txt: var(--d-sidebar-txt);
+      --sidebar-act: var(--d-sidebar-act);
+      --topbar-bg: var(--d-topbar-bg);
+      --footer-bg: var(--d-footer-bg);
+      --footer-txt: var(--d-footer-txt);
+      --input-bg: var(--d-input-bg);
+      --input-bdr: var(--d-input-bdr);
+      --input-fcs: var(--d-input-fcs);
+      --card-bg: var(--d-surface);
+    }
+
+    /* ============================================================
+   SECTION: GLOBAL RESET & BASE STYLES
+============================================================ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background .3s, color .3s
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Syne', sans-serif;
+      color: var(--text-hi)
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit
+    }
+
+    ul {
+      list-style: none
+    }
+
+    img {
+      display: block;
+      max-width: 100%
+    }
+
+    /* ============================================================
+   SECTION: LAYOUT SHELL
+============================================================ */
+    .layout {
+      display: flex;
+      min-height: 100vh
+    }
+
+    .layout-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0
+    }
+
+    /* ============================================================
+   SECTION: SIDEBAR NAVIGATION
+============================================================ */
+    .sidebar {
+      width: 258px;
+      min-height: 100vh;
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 200;
+      transition: width .3s cubic-bezier(.4, 0, .2, 1), transform .3s;
+      overflow: hidden;
+      border-right: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .sidebar.collapsed {
+      width: 64px
+    }
+
+    /* Sidebar — logo / brand */
+    .sb-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      height: 64px;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      overflow: hidden;
+    }
+
+    .sb-logo-mark {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 8px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: .95rem;
+      color: #fff;
+      letter-spacing: -1px;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .sb-logo-mark {
+      color: #000814
+    }
+
+    .sb-logo-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--sidebar-txt);
+      white-space: nowrap;
+      opacity: 1;
+      transition: opacity .2s;
+    }
+
+    .sidebar.collapsed .sb-logo-name {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    /* Sidebar — scrollable nav */
+    .sb-nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 14px 0;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, .08) transparent;
+    }
+
+    .sb-section {
+      font-size: .6rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .22);
+      padding: 10px 20px 4px;
+      white-space: nowrap;
+      transition: opacity .2s;
+    }
+
+    .sidebar.collapsed .sb-section {
+      opacity: 0
+    }
+
+    /* Nav item */
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      color: var(--sidebar-txt);
+      font-size: .79rem;
+      cursor: pointer;
+      white-space: nowrap;
+      border-left: 3px solid transparent;
+      transition: background .14s, color .14s, border-color .14s;
+      position: relative;
+    }
+
+    .sb-item:hover {
+      background: rgba(255, 255, 255, .05);
+      color: #fff
+    }
+
+    .sb-item.active {
+      background: rgba(255, 255, 255, .08);
+      color: var(--sidebar-act);
+      border-left-color: var(--sidebar-act);
+      font-weight: 600;
+    }
+
+    .sb-item svg {
+      min-width: 20px;
+      min-height: 20px;
+      flex-shrink: 0
+    }
+
+    .sb-label {
+      opacity: 1;
+      transition: opacity .2s
+    }
+
+    .sidebar.collapsed .sb-label {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .sb-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: .6rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      transition: opacity .2s;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .sb-badge {
+      color: #000814
+    }
+
+    .sidebar.collapsed .sb-badge {
+      opacity: 0
+    }
+
+    /* Sidebar — collapse toggle */
+    .sb-collapse {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      background: none;
+      color: var(--sidebar-txt);
+      font-size: .79rem;
+      transition: background .14s;
+    }
+
+    .sb-collapse:hover {
+      background: rgba(255, 255, 255, .05)
+    }
+
+    .sb-collapse .collapse-lbl {
+      white-space: nowrap;
+      transition: opacity .2s
+    }
+
+    .sidebar.collapsed .sb-collapse .collapse-lbl {
+      opacity: 0
+    }
+
+    .sb-collapse .chevron {
+      transition: transform .3s;
+      min-width: 20px
+    }
+
+    .sidebar.collapsed .sb-collapse .chevron {
+      transform: rotate(180deg)
+    }
+
+    /* ============================================================
+   SECTION: TOP NAVIGATION BAR
+============================================================ */
+    .topbar {
+      height: 64px;
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      margin-left: 258px;
+      transition: margin-left .3s cubic-bezier(.4, 0, .2, 1), background .3s;
+    }
+
+    .topbar.sc {
+      margin-left: 64px
+    }
+
+    /* Breadcrumb */
+    .topbar-bc {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      font-size: .78rem;
+      color: var(--text-lo);
+    }
+
+    .topbar-bc .bc-sep {
+      opacity: .4
+    }
+
+    .topbar-bc .bc-cur {
+      color: var(--text-hi);
+      font-weight: 600;
+      font-family: 'Syne', sans-serif
+    }
+
+    /* Action buttons */
+    .tb-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .ib {
+      /* icon-button base */
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .14s, color .14s, border-color .14s;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .ib:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    [data-theme="dark"] .ib:hover {
+      color: #000814
+    }
+
+    /* Notification badge on bell */
+    .ib .notif-dot {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--topbar-bg);
+    }
+
+    /* Theme toggle */
+    .tb-theme {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .14s, color .14s;
+    }
+
+    .tb-theme:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    [data-theme="dark"] .tb-theme:hover {
+      color: #000814
+    }
+
+    /* Dropdown wrapper */
+    .dd-wrap {
+      position: relative
+    }
+
+    .dd-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 210px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px var(--shadow-md);
+      z-index: 999;
+      overflow: hidden;
+      display: none;
+      animation: ddIn .16s ease;
+    }
+
+    .dd-menu.open {
+      display: block
+    }
+
+    @keyframes ddIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .dd-head {
+      padding: 11px 15px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: .66rem;
+      color: var(--text-lo);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .dd-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 15px;
+      font-size: .79rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .11s;
+    }
+
+    .dd-item:hover {
+      background: var(--surface);
+      color: var(--accent)
+    }
+
+    .dd-item.red {
+      color: #ef4444
+    }
+
+    .dd-item.red:hover {
+      background: rgba(239, 68, 68, .08);
+      color: #ef4444
+    }
+
+    .dd-div {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0
+    }
+
+    /* User button */
+    .tb-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      transition: background .14s;
+    }
+
+    .tb-user:hover {
+      background: var(--surface)
+    }
+
+    .tb-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: .7rem;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .tb-avatar {
+      color: #000814
+    }
+
+    .tb-user-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      line-height: 1.2
+    }
+
+    .tb-user-name {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text-hi)
+    }
+
+    .tb-user-role {
+      font-size: .62rem;
+      color: var(--text-lo)
+    }
+
+    /* Mobile menu button */
+    .mob-menu {
+      display: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================================
+   SECTION: MAIN CONTENT AREA
+============================================================ */
+    .main {
+      flex: 1;
+      padding: 28px 28px;
+      margin-left: 258px;
+      transition: margin-left .3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .main.sc {
+      margin-left: 64px
+    }
+
+    /* Page header */
+    .page-hdr {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .page-hdr-left h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.1;
+    }
+
+    .page-hdr-left p {
+      font-size: .78rem;
+      color: var(--text-lo);
+      margin-top: 5px
+    }
+
+    .page-hdr-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0
+    }
+
+    /* ============================================================
+   SECTION: COLUMN GRID SYSTEM
+   12-column Bootstrap-style responsive grid.
+   Breakpoints: sm≥576 · md≥768 · lg≥1024 · xl≥1280
+
+   Usage example:
+     <div class="row">
+       <div class="col-12 col-md-6 col-lg-4"> ... </div>
+     </div>
+============================================================ */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -10px
+    }
+
+    .row+.row {
+      margin-top: 20px
+    }
+
+    [class*="col-"] {
+      padding: 0 10px;
+      margin-bottom: 20px;
+      min-width: 0
+    }
+
+    .col-1 {
+      width: 8.3333%
+    }
+
+    .col-2 {
+      width: 16.6667%
+    }
+
+    .col-3 {
+      width: 25%
+    }
+
+    .col-4 {
+      width: 33.3333%
+    }
+
+    .col-5 {
+      width: 41.6667%
+    }
+
+    .col-6 {
+      width: 50%
+    }
+
+    .col-7 {
+      width: 58.3333%
+    }
+
+    .col-8 {
+      width: 66.6667%
+    }
+
+    .col-9 {
+      width: 75%
+    }
+
+    .col-10 {
+      width: 83.3333%
+    }
+
+    .col-11 {
+      width: 91.6667%
+    }
+
+    .col-12 {
+      width: 100%
+    }
+
+    @media(min-width:576px) {
+      .col-sm-1 {
+        width: 8.3333%
+      }
+
+      .col-sm-2 {
+        width: 16.6667%
+      }
+
+      .col-sm-3 {
+        width: 25%
+      }
+
+      .col-sm-4 {
+        width: 33.3333%
+      }
+
+      .col-sm-5 {
+        width: 41.6667%
+      }
+
+      .col-sm-6 {
+        width: 50%
+      }
+
+      .col-sm-7 {
+        width: 58.3333%
+      }
+
+      .col-sm-8 {
+        width: 66.6667%
+      }
+
+      .col-sm-9 {
+        width: 75%
+      }
+
+      .col-sm-10 {
+        width: 83.3333%
+      }
+
+      .col-sm-11 {
+        width: 91.6667%
+      }
+
+      .col-sm-12 {
+        width: 100%
+      }
+    }
+
+    @media(min-width:768px) {
+      .col-md-1 {
+        width: 8.3333%
+      }
+
+      .col-md-2 {
+        width: 16.6667%
+      }
+
+      .col-md-3 {
+        width: 25%
+      }
+
+      .col-md-4 {
+        width: 33.3333%
+      }
+
+      .col-md-5 {
+        width: 41.6667%
+      }
+
+      .col-md-6 {
+        width: 50%
+      }
+
+      .col-md-7 {
+        width: 58.3333%
+      }
+
+      .col-md-8 {
+        width: 66.6667%
+      }
+
+      .col-md-9 {
+        width: 75%
+      }
+
+      .col-md-10 {
+        width: 83.3333%
+      }
+
+      .col-md-11 {
+        width: 91.6667%
+      }
+
+      .col-md-12 {
+        width: 100%
+      }
+    }
+
+    @media(min-width:1024px) {
+      .col-lg-1 {
+        width: 8.3333%
+      }
+
+      .col-lg-2 {
+        width: 16.6667%
+      }
+
+      .col-lg-3 {
+        width: 25%
+      }
+
+      .col-lg-4 {
+        width: 33.3333%
+      }
+
+      .col-lg-5 {
+        width: 41.6667%
+      }
+
+      .col-lg-6 {
+        width: 50%
+      }
+
+      .col-lg-7 {
+        width: 58.3333%
+      }
+
+      .col-lg-8 {
+        width: 66.6667%
+      }
+
+      .col-lg-9 {
+        width: 75%
+      }
+
+      .col-lg-10 {
+        width: 83.3333%
+      }
+
+      .col-lg-11 {
+        width: 91.6667%
+      }
+
+      .col-lg-12 {
+        width: 100%
+      }
+    }
+
+    @media(min-width:1280px) {
+      .col-xl-1 {
+        width: 8.3333%
+      }
+
+      .col-xl-2 {
+        width: 16.6667%
+      }
+
+      .col-xl-3 {
+        width: 25%
+      }
+
+      .col-xl-4 {
+        width: 33.3333%
+      }
+
+      .col-xl-5 {
+        width: 41.6667%
+      }
+
+      .col-xl-6 {
+        width: 50%
+      }
+
+      .col-xl-7 {
+        width: 58.3333%
+      }
+
+      .col-xl-8 {
+        width: 66.6667%
+      }
+
+      .col-xl-9 {
+        width: 75%
+      }
+
+      .col-xl-10 {
+        width: 83.3333%
+      }
+
+      .col-xl-11 {
+        width: 91.6667%
+      }
+
+      .col-xl-12 {
+        width: 100%
+      }
+    }
+
+    /* ============================================================
+   SECTION: STAT CARD
+============================================================ */
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      box-shadow: 0 2px 12px var(--shadow-sm);
+      height: 100%;
+      transition: box-shadow .2s, transform .2s, background .3s, border-color .3s;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 6px 24px var(--shadow-md);
+      transform: translateY(-2px)
+    }
+
+    .stat-icon {
+      width: 46px;
+      height: 46px;
+      min-width: 46px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-body {
+      flex: 1;
+      min-width: 0
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.45rem;
+      color: var(--text-hi);
+      letter-spacing: -.04em;
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-size: .7rem;
+      color: var(--text-lo);
+      margin-top: 4px;
+      letter-spacing: .02em
+    }
+
+    .stat-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+    .stat-trend.up {
+      background: rgba(34, 197, 94, .12);
+      color: #16a34a
+    }
+
+    .stat-trend.dn {
+      background: rgba(239, 68, 68, .12);
+      color: #dc2626
+    }
+
+    [data-theme="dark"] .stat-trend.up {
+      background: rgba(74, 222, 128, .14);
+      color: #4ade80
+    }
+
+    [data-theme="dark"] .stat-trend.dn {
+      background: rgba(248, 113, 113, .14);
+      color: #f87171
+    }
+
+    /* ============================================================
+   SECTION: CARD COMPONENT
+============================================================ */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: background .3s, border-color .3s, box-shadow .2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 24px var(--shadow-md)
+    }
+
+    .card-hdr {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-hdr-txt {
+      flex: 1
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text-hi);
+      letter-spacing: -.01em;
+    }
+
+    .card-sub {
+      font-size: .71rem;
+      color: var(--text-lo);
+      margin-top: 3px
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: .66rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: rgba(235, 94, 40, .1);
+      color: var(--accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .card-tag {
+      background: rgba(255, 195, 0, .14)
+    }
+
+    .card-body {
+      padding: 20px 22px;
+      flex: 1
+    }
+
+    /* Component section inside card */
+    .cs {
+      margin-bottom: 22px
+    }
+
+    .cs:last-child {
+      margin-bottom: 0
+    }
+
+    .cs-lbl {
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-lo);
+      margin-bottom: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .cs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center
+    }
+
+    /* ============================================================
+   SECTION: CHART COMPONENT
+============================================================ */
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 225px
+    }
+
+    /* ============================================================
+   SECTION: TABLE COMPONENT
+============================================================ */
+    .tbl-wrap {
+      overflow-x: auto
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .76rem;
+      min-width: 340px
+    }
+
+    thead th {
+      padding: 9px 13px;
+      text-align: left;
+      font-family: 'Syne', sans-serif;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-lo);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 10px 13px;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none
+    }
+
+    tbody tr:hover td {
+      background: var(--surface)
+    }
+
+    .ucell {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .uavt {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .58rem;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .uavt {
+      color: #000814
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: .65rem;
+      font-weight: 600;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0
+    }
+
+    .pill.ok {
+      background: rgba(34, 197, 94, .12);
+      color: #16a34a
+    }
+
+    .pill.warn {
+      background: rgba(234, 179, 8, .12);
+      color: #b45309
+    }
+
+    .pill.bad {
+      background: rgba(239, 68, 68, .12);
+      color: #dc2626
+    }
+
+    [data-theme="dark"] .pill.ok {
+      background: rgba(74, 222, 128, .15);
+      color: #4ade80
+    }
+
+    [data-theme="dark"] .pill.warn {
+      background: rgba(255, 214, 10, .15);
+      color: #ffd60a
+    }
+
+    [data-theme="dark"] .pill.bad {
+      background: rgba(248, 113, 113, .15);
+      color: #f87171
+    }
+
+    .tup {
+      color: #16a34a;
+      font-weight: 600
+    }
+
+    .tdn {
+      color: #dc2626;
+      font-weight: 600
+    }
+
+    [data-theme="dark"] .tup {
+      color: #4ade80
+    }
+
+    [data-theme="dark"] .tdn {
+      color: #f87171
+    }
+
+    /* ============================================================
+   SECTION: BUTTON COMPONENTS
+   Sizes: .btn-xs .btn-sm (default) .btn-lg
+   Variants: -primary -secondary -outline -ghost -danger -success -warning
+   Modifiers: .btn-icon .btn-loading
+============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: .79rem;
+      font-weight: 600;
+      font-family: 'DM Mono', monospace;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .btn-xs {
+      padding: 4px 10px;
+      font-size: .66rem;
+      border-radius: 6px;
+      gap: 4px
+    }
+
+    .btn-sm {
+      padding: 6px 13px;
+      font-size: .74rem;
+      border-radius: 7px
+    }
+
+    .btn-lg {
+      padding: 11px 22px;
+      font-size: .88rem;
+      border-radius: 10px
+    }
+
+    /* Primary */
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dk);
+      border-color: var(--accent-dk)
+    }
+
+    [data-theme="dark"] .btn-primary {
+      color: #000814
+    }
+
+    /* Secondary */
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border)
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+      color: var(--text-hi)
+    }
+
+    /* Outline */
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      color: #fff
+    }
+
+    [data-theme="dark"] .btn-outline:hover {
+      color: #000814
+    }
+
+    /* Ghost */
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: transparent
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface);
+      color: var(--text-hi)
+    }
+
+    /* Danger */
+    .btn-danger {
+      background: rgba(239, 68, 68, .1);
+      color: #dc2626;
+      border-color: rgba(239, 68, 68, .3)
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+      color: #fff;
+      border-color: #dc2626
+    }
+
+    /* Success */
+    .btn-success {
+      background: rgba(34, 197, 94, .1);
+      color: #16a34a;
+      border-color: rgba(34, 197, 94, .3)
+    }
+
+    .btn-success:hover {
+      background: #16a34a;
+      color: #fff;
+      border-color: #16a34a
+    }
+
+    /* Warning */
+    .btn-warning {
+      background: rgba(234, 179, 8, .1);
+      color: #b45309;
+      border-color: rgba(234, 179, 8, .3)
+    }
+
+    .btn-warning:hover {
+      background: #d97706;
+      color: #fff;
+      border-color: #d97706
+    }
+
+    /* Icon-only square */
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0
+    }
+
+    .btn-icon.btn-sm {
+      width: 30px;
+      height: 30px
+    }
+
+    .btn-icon.btn-lg {
+      width: 44px;
+      height: 44px
+    }
+
+    /* Loading state */
+    .btn-loading {
+      opacity: .75;
+      pointer-events: none
+    }
+
+    .btn-loading::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* ============================================================
+   SECTION: BADGE COMPONENTS
+============================================================ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: .64rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor
+    }
+
+    .badge-primary {
+      background: rgba(235, 94, 40, .13);
+      color: var(--accent)
+    }
+
+    .badge-success {
+      background: rgba(34, 197, 94, .12);
+      color: #16a34a
+    }
+
+    .badge-warning {
+      background: rgba(234, 179, 8, .12);
+      color: #b45309
+    }
+
+    .badge-danger {
+      background: rgba(239, 68, 68, .12);
+      color: #dc2626
+    }
+
+    .badge-info {
+      background: rgba(59, 130, 246, .12);
+      color: #2563eb
+    }
+
+    .badge-neutral {
+      background: var(--surface);
+      color: var(--text-lo);
+      border: 1px solid var(--border)
+    }
+
+    [data-theme="dark"] .badge-primary {
+      background: rgba(255, 195, 0, .16)
+    }
+
+    [data-theme="dark"] .badge-success {
+      background: rgba(74, 222, 128, .14);
+      color: #4ade80
+    }
+
+    [data-theme="dark"] .badge-warning {
+      background: rgba(255, 214, 10, .14);
+      color: #ffd60a
+    }
+
+    [data-theme="dark"] .badge-danger {
+      background: rgba(248, 113, 113, .14);
+      color: #f87171
+    }
+
+    [data-theme="dark"] .badge-info {
+      background: rgba(96, 165, 250, .14);
+      color: #60a5fa
+    }
+
+    .badge-sq {
+      border-radius: 5px
+    }
+
+    /* ============================================================
+   SECTION: AVATAR COMPONENTS
+============================================================ */
+    .av {
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .av {
+      color: #000814
+    }
+
+    .av-xs {
+      width: 24px;
+      height: 24px;
+      font-size: .55rem
+    }
+
+    .av-sm {
+      width: 32px;
+      height: 32px;
+      font-size: .68rem
+    }
+
+    .av-md {
+      width: 42px;
+      height: 42px;
+      font-size: .85rem
+    }
+
+    .av-lg {
+      width: 54px;
+      height: 54px;
+      font-size: 1rem
+    }
+
+    .av-sq {
+      border-radius: 8px
+    }
+
+    .av-sq.av-sm {
+      border-radius: 6px
+    }
+
+    .av-sq.av-xs {
+      border-radius: 4px
+    }
+
+    .av-group {
+      display: flex
+    }
+
+    .av-group .av {
+      border: 2px solid var(--card-bg);
+      margin-left: -8px
+    }
+
+    .av-group .av:first-child {
+      margin-left: 0
+    }
+
+    /* ============================================================
+   SECTION: ALERT COMPONENTS
+============================================================ */
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: .77rem;
+      border: 1px solid transparent;
+      margin-bottom: 8px;
+    }
+
+    .alert:last-child {
+      margin-bottom: 0
+    }
+
+    .alert svg {
+      flex-shrink: 0;
+      margin-top: 1px
+    }
+
+    .alert-t {
+      line-height: 1.5
+    }
+
+    .alert-t strong {
+      display: block;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      font-size: .79rem;
+      margin-bottom: 2px
+    }
+
+    .alert-ok {
+      background: rgba(34, 197, 94, .08);
+      border-color: rgba(34, 197, 94, .22);
+      color: #16a34a
+    }
+
+    .alert-warn {
+      background: rgba(234, 179, 8, .08);
+      border-color: rgba(234, 179, 8, .22);
+      color: #b45309
+    }
+
+    .alert-err {
+      background: rgba(239, 68, 68, .08);
+      border-color: rgba(239, 68, 68, .22);
+      color: #dc2626
+    }
+
+    .alert-inf {
+      background: rgba(59, 130, 246, .08);
+      border-color: rgba(59, 130, 246, .22);
+      color: #2563eb
+    }
+
+    [data-theme="dark"] .alert-ok {
+      background: rgba(74, 222, 128, .07);
+      border-color: rgba(74, 222, 128, .18);
+      color: #4ade80
+    }
+
+    [data-theme="dark"] .alert-warn {
+      background: rgba(255, 214, 10, .07);
+      border-color: rgba(255, 214, 10, .18);
+      color: #ffd60a
+    }
+
+    [data-theme="dark"] .alert-err {
+      background: rgba(248, 113, 113, .07);
+      border-color: rgba(248, 113, 113, .18);
+      color: #f87171
+    }
+
+    [data-theme="dark"] .alert-inf {
+      background: rgba(96, 165, 250, .07);
+      border-color: rgba(96, 165, 250, .18);
+      color: #60a5fa
+    }
+
+    /* ============================================================
+   SECTION: PROGRESS BAR COMPONENT
+============================================================ */
+    .pbar-wrap {
+      margin-bottom: 11px
+    }
+
+    .pbar-wrap:last-child {
+      margin-bottom: 0
+    }
+
+    .pbar-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .71rem;
+      margin-bottom: 5px
+    }
+
+    .pbar-meta span:first-child {
+      color: var(--text)
+    }
+
+    .pbar-meta span:last-child {
+      color: var(--text-lo);
+      font-size: .66rem
+    }
+
+    .pbar-track {
+      height: 7px;
+      background: var(--surface);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border)
+    }
+
+    .pbar-fill {
+      height: 100%;
+      border-radius: 20px;
+      background: var(--accent);
+      transition: width .6s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .pbar-fill.ok {
+      background: #16a34a
+    }
+
+    .pbar-fill.warn {
+      background: #d97706
+    }
+
+    .pbar-fill.bad {
+      background: #dc2626
+    }
+
+    [data-theme="dark"] .pbar-fill.ok {
+      background: #4ade80
+    }
+
+    [data-theme="dark"] .pbar-fill.warn {
+      background: #ffd60a
+    }
+
+    [data-theme="dark"] .pbar-fill.bad {
+      background: #f87171
+    }
+
+    /* ============================================================
+   SECTION: TOGGLE SWITCH COMPONENT
+============================================================ */
+    .tgl-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .79rem;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .tgl {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      display: inline-block;
+      flex-shrink: 0
+    }
+
+    .tgl input {
+      opacity: 0;
+      width: 0;
+      height: 0
+    }
+
+    .tgl-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .tgl-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+    }
+
+    .tgl input:checked+.tgl-slider {
+      background: var(--accent)
+    }
+
+    .tgl input:checked+.tgl-slider::before {
+      transform: translateX(18px)
+    }
+
+    [data-theme="dark"] .tgl-slider::before {
+      background: #000814
+    }
+
+    /* ============================================================
+   SECTION: TOOLTIP COMPONENT
+============================================================ */
+    [data-tip] {
+      position: relative;
+      cursor: default
+    }
+
+    [data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 7px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-hi);
+      color: var(--bg);
+      font-size: .66rem;
+      padding: 5px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .14s;
+      z-index: 200;
+    }
+
+    [data-tip]::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--text-hi);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .14s;
+      z-index: 200;
+    }
+
+    [data-tip]:hover::after,
+    [data-tip]:hover::before {
+      opacity: 1
+    }
+
+    /* ============================================================
+   SECTION: ICON GRID COMPONENT
+============================================================ */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 7px
+    }
+
+    .icon-chip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+
+    .icon-chip:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    [data-theme="dark"] .icon-chip:hover {
+      color: #000814
+    }
+
+    /* ============================================================
+   SECTION: COMPONENT DROPDOWN (inside cards)
+============================================================ */
+    .c-dd {
+      position: relative;
+      display: inline-block
+    }
+
+    .c-dd-panel {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 175px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      box-shadow: 0 8px 24px var(--shadow-md);
+      z-index: 50;
+      overflow: hidden;
+      display: none;
+      animation: ddIn .14s ease;
+    }
+
+    .c-dd-panel.open {
+      display: block
+    }
+
+    .c-dd-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      font-size: .77rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .1s;
+    }
+
+    .c-dd-item:hover {
+      background: var(--surface);
+      color: var(--accent)
+    }
+
+    .c-dd-item.red {
+      color: #ef4444
+    }
+
+    .c-dd-item.red:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, .07)
+    }
+
+    /* ============================================================
+   SECTION: FORM INPUT COMPONENTS
+============================================================ */
+    .fg {
+      margin-bottom: 17px
+    }
+
+    .fg:last-child {
+      margin-bottom: 0
+    }
+
+    .fl {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .73rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: .02em;
+    }
+
+    .fl .req {
+      color: var(--accent);
+      margin-left: 2px
+    }
+
+    .fl a {
+      font-weight: 400;
+      color: var(--accent);
+      font-size: .69rem;
+      transition: opacity .14s
+    }
+
+    .fl a:hover {
+      opacity: .7
+    }
+
+    .fhint {
+      font-size: .66rem;
+      color: var(--text-lo);
+      margin-top: 4px;
+      line-height: 1.4
+    }
+
+    /* Base input */
+    .fi {
+      width: 100%;
+      padding: 9px 13px;
+      border-radius: 8px;
+      border: 1.5px solid var(--input-bdr);
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .79rem;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+      -webkit-appearance: none;
+    }
+
+    .fi::placeholder {
+      color: var(--text-lo)
+    }
+
+    .fi:focus {
+      border-color: var(--input-fcs);
+      box-shadow: 0 0 0 3px var(--accent-gl)
+    }
+
+    .fi:disabled {
+      opacity: .5;
+      cursor: not-allowed
+    }
+
+    .fi-ta {
+      resize: vertical;
+      min-height: 88px;
+      line-height: 1.55
+    }
+
+    /* Icon inside input */
+    .fi-wrap {
+      position: relative
+    }
+
+    .fi-wrap .fi {
+      padding-left: 36px
+    }
+
+    .fi-ico {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-lo);
+      pointer-events: none;
+      transition: color .15s
+    }
+
+    .fi-wrap:focus-within .fi-ico {
+      color: var(--accent)
+    }
+
+    /* Input group */
+    .fi-group {
+      display: flex
+    }
+
+    .fi-group .fi {
+      border-radius: 0 8px 8px 0;
+      flex: 1
+    }
+
+    .fi-addon {
+      display: flex;
+      align-items: center;
+      padding: 0 11px;
+      background: var(--surface);
+      border: 1.5px solid var(--input-bdr);
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      font-size: .73rem;
+      color: var(--text-lo);
+      white-space: nowrap;
+    }
+
+    /* Custom checkbox */
+    .chk-wrap {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: .79rem;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 8px;
+    }
+
+    .chk-wrap:last-child {
+      margin-bottom: 0
+    }
+
+    .chk-in {
+      display: none
+    }
+
+    .chk-box {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      border: 2px solid var(--input-bdr);
+      border-radius: 4px;
+      background: var(--input-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .14s, border-color .14s;
+    }
+
+    .chk-in:checked+.chk-box {
+      background: var(--accent);
+      border-color: var(--accent)
+    }
+
+    .chk-in:checked+.chk-box::after {
+      content: '';
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translateY(-1px);
+      display: block;
+    }
+
+    [data-theme="dark"] .chk-in:checked+.chk-box::after {
+      border-color: #000814
+    }
+
+    /* Custom radio */
+    .rdo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: .79rem;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 8px;
+    }
+
+    .rdo-wrap:last-child {
+      margin-bottom: 0
+    }
+
+    .rdo-in {
+      display: none
+    }
+
+    .rdo-circ {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      border: 2px solid var(--input-bdr);
+      border-radius: 50%;
+      background: var(--input-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .14s;
+    }
+
+    .rdo-in:checked+.rdo-circ {
+      border-color: var(--accent)
+    }
+
+    .rdo-in:checked+.rdo-circ::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* Searchable custom select */
+    .csel {
+      position: relative
+    }
+
+    .csel-trig {
+      width: 100%;
+      padding: 9px 34px 9px 13px;
+      border-radius: 8px;
+      border: 1.5px solid var(--input-bdr);
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .79rem;
+      outline: none;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .15s, box-shadow .15s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .csel-trig.open,
+    .csel-trig:focus {
+      border-color: var(--input-fcs);
+      box-shadow: 0 0 0 3px var(--accent-gl)
+    }
+
+    .csel-trig .ph {
+      color: var(--text-lo)
+    }
+
+    .csel-arr {
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-lo);
+      pointer-events: none;
+      transition: transform .2s
+    }
+
+    .csel-trig.open~.csel-arr {
+      transform: translateY(-50%) rotate(180deg)
+    }
+
+    .csel-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      border: 1.5px solid var(--input-fcs);
+      border-radius: 9px;
+      box-shadow: 0 8px 24px var(--shadow-md);
+      z-index: 300;
+      overflow: hidden;
+      display: none;
+      animation: ddIn .14s ease;
+    }
+
+    .csel-panel.open {
+      display: block
+    }
+
+    .csel-search {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .csel-search input {
+      width: 100%;
+      padding: 7px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--input-bdr);
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      outline: none;
+    }
+
+    .csel-search input:focus {
+      border-color: var(--input-fcs)
+    }
+
+    .csel-search input::placeholder {
+      color: var(--text-lo)
+    }
+
+    .csel-opts {
+      max-height: 175px;
+      overflow-y: auto
+    }
+
+    .csel-opt {
+      padding: 9px 13px;
+      font-size: .78rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .1s;
+    }
+
+    .csel-opt:hover {
+      background: var(--surface);
+      color: var(--accent)
+    }
+
+    .csel-opt.sel {
+      color: var(--accent);
+      font-weight: 600;
+      background: var(--surface)
+    }
+
+    .csel-opt.hide {
+      display: none
+    }
+
+    .csel-empty {
+      padding: 10px 13px;
+      font-size: .73rem;
+      color: var(--text-lo);
+      text-align: center
+    }
+
+    /* Dropzone */
+    .dz {
+      border: 2px dashed var(--input-bdr);
+      border-radius: 10px;
+      padding: 26px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      background: transparent;
+      display: block;
+      width: 100%;
+    }
+
+    .dz:hover,
+    .dz.over {
+      border-color: var(--input-fcs);
+      background: var(--accent-gl)
+    }
+
+    .dz-ico {
+      color: var(--text-lo);
+      margin-bottom: 8px
+    }
+
+    .dz-txt {
+      font-size: .79rem;
+      color: var(--text);
+      margin-bottom: 3px
+    }
+
+    .dz-txt strong {
+      color: var(--accent)
+    }
+
+    .dz-hint {
+      font-size: .66rem;
+      color: var(--text-lo)
+    }
+
+    .dz-files {
+      margin-top: 8px
+    }
+
+    .dz-file {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 7px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: .71rem;
+      color: var(--text);
+      margin-top: 6px;
+    }
+
+    .dz-fname {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0
+    }
+
+    .dz-fname span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .dz-rm {
+      cursor: pointer;
+      color: var(--text-lo);
+      background: none;
+      border: none;
+      padding: 0;
+      transition: color .1s;
+      display: flex
+    }
+
+    .dz-rm:hover {
+      color: #dc2626
+    }
+
+    /* ============================================================
+   SECTION: FOOTER
+============================================================ */
+    .footer {
+      background: var(--footer-bg);
+      color: var(--footer-txt);
+      padding: 17px 28px;
+      margin-left: 258px;
+      transition: margin-left .3s cubic-bezier(.4, 0, .2, 1), background .3s;
+      border-top: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .footer.sc {
+      margin-left: 64px
+    }
+
+    .footer-in {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-copy {
+      font-size: .71rem;
+      opacity: .65
+    }
+
+    .footer-copy strong {
+      font-family: 'Syne', sans-serif
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      font-size: .71rem;
+      opacity: .55
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--accent)
+    }
+
+    .footer-v {
+      font-size: .64rem;
+      opacity: .4;
+      font-family: 'DM Mono', monospace
+    }
+
+    /* ============================================================
+   SECTION: SIDEBAR OVERLAY (mobile)
+============================================================ */
+    .sb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 150;
+    }
+
+    .sb-overlay.show {
+      display: block
+    }
+
+    /* ============================================================
+   SECTION: MOBILE & RESPONSIVE BREAKPOINTS
+============================================================ */
+    @media(max-width:900px) {
+      .sidebar {
+        transform: translateX(-100%);
+        width: 258px !important
+      }
+
+      .sidebar.mob-open {
+        transform: translateX(0)
+      }
+
+      .topbar,
+      .main,
+      .footer {
+        margin-left: 0 !important
+      }
+
+      .mob-menu {
+        display: flex
+      }
+
+      .tb-user-info {
+        display: none
+      }
+    }
+
+    @media(max-width:768px) {
+
+      /* Columns without responsive modifiers stack to full width */
+      .col-6:not([class*="col-sm-"]):not([class*="col-md-"]):not([class*="col-lg-"]) {
+        width: 100%
+      }
+    }
+
+    @media(max-width:600px) {
+      .topbar {
+        padding: 0 14px;
+        gap: 7px
+      }
+
+      .main {
+        padding: 18px 14px
+      }
+
+      .footer {
+        padding: 14px
+      }
+
+      .footer-links {
+        display: none
+      }
+
+      .page-hdr-left h1 {
+        font-size: 1.25rem
+      }
+
+      .card-body,
+      .card-hdr {
+        padding-left: 16px;
+        padding-right: 16px
+      }
+
+      .social-row {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* ============================================================
+   SECTION: SCROLLBAR STYLING
+============================================================ */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent)
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+     SIDEBAR OVERLAY (mobile tap-to-close)
+============================================================ -->
+  <div class="sb-overlay" id="sbOverlay" onclick="closeMob()"></div>
+
+  <div class="layout">
+
+    <!-- ============================================================
+     SECTION: SIDEBAR (DONE)
+============================================================ -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo -->
+      <div class="sb-logo">
+        <div class="sb-logo-mark">AD</div>
+        <span class="sb-logo-name">AdminDash</span>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="sb-nav">
+        <div class="sb-section">Main</div>
+
+        <div class="sb-item active" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          <span class="sb-label">Dashboard</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span class="sb-label">Users</span>
+          <span class="sb-badge">24</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          <span class="sb-label">Analytics</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="sb-label">Orders</span>
+          <span class="sb-badge">7</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          <span class="sb-label">Content</span>
+        </div>
+
+        <div class="sb-section">System</div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          <span class="sb-label">Settings</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+            <line x1="6" y1="1" x2="6" y2="4" />
+            <line x1="10" y1="1" x2="10" y2="4" />
+            <line x1="14" y1="1" x2="14" y2="4" />
+          </svg>
+          <span class="sb-label">Reports</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+          <span class="sb-label">Activity Log</span>
+        </div>
+
+        <div class="sb-item" onclick="sbActive(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+          </svg>
+          <span class="sb-label">Integrations</span>
+        </div>
+      </nav>
+
+      <!-- Collapse button -->
+      <button class="sb-collapse" onclick="toggleSb()">
+        <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        <span class="collapse-lbl">Collapse sidebar</span>
+      </button>
+    </aside>
+
+    <!-- ============================================================
+     SECTION: LAYOUT BODY
+============================================================ -->
+    <div class="layout-body">
+
+      <!-- ============================================================
+     SECTION: TOP NAVIGATION BAR (DONE)
+============================================================ -->
+      <header class="topbar" id="topbar">
+        <!-- Mobile hamburger -->
+        <button class="mob-menu ib" onclick="openMob()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+
+        <!-- Breadcrumb -->
+        <div class="topbar-bc">
+          <span>Dashboard</span>
+          <span class="bc-sep">/</span>
+          <span class="bc-cur">Overview</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="tb-actions">
+          <!-- Notifications -->
+          <button class="ib" title="Notifications">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span class="notif-dot"></span>
+          </button>
+
+          <!-- Theme toggle -->
+          <button class="tb-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+            <svg id="themeIco" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+
+          <!-- Gear dropdown -->
+          <div class="dd-wrap">
+            <button class="ib" onclick="toggleDD('gearDD')" title="Settings">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </button>
+            <div class="dd-menu" id="gearDD">
+              <div class="dd-head">Configuration</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>Profile Settings</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>Security</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>Integrations</div>
+              <div class="dd-div"></div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>System Logs</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <polyline points="23 4 23 10 17 10" />
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                </svg>Reset Config</div>
+            </div>
+          </div>
+
+          <!-- User dropdown -->
+          <div class="dd-wrap">
+            <button class="tb-user" onclick="toggleDD('userDD')">
+              <div class="tb-avatar">JD</div>
+              <div class="tb-user-info">
+                <span class="tb-user-name">John Doe</span>
+                <span class="tb-user-role">Super Admin</span>
+              </div>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-lo);margin-left:3px">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            <div class="dd-menu" id="userDD">
+              <div class="dd-head">Account</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>View Profile</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 20V10" />
+                  <path d="M12 20V4" />
+                  <path d="M6 20v-6" />
+                </svg>My Analytics</div>
+              <div class="dd-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                </svg>Billing</div>
+              <div class="dd-div"></div>
+              <div class="dd-item red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>Sign Out</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============================================================
+     SECTION: MAIN CONTENT
+============================================================ -->
+      <main class="main" id="mainContent">
+
+        <!-- Page Header -->
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <h1>Good morning, John 👋</h1>
+            <p>Sunday, June 14, 2026 — Here's your project snapshot for today.</p>
+          </div>
+          <div class="page-hdr-right">
+            <button class="btn btn-secondary btn-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export
+            </button>
+            <button class="btn btn-primary btn-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              New Report
+            </button>
+          </div>
+        </div>
+
+        <!-- ============================================================
+       ROW 1 — Stat Cards (col-6 col-lg-3 each = 4-up on large screens)
+  ============================================================ -->
+        <div class="row">
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(235,94,40,.12)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#eb5e28" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-num">$128.4K</div>
+                <div class="stat-lbl">Total Revenue</div>
+                <span class="stat-trend up">↑ 12.4% vs last month</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(99,102,241,.12)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-num">8,291</div>
+                <div class="stat-lbl">Active Users</div>
+                <span class="stat-trend up">↑ 8.1% vs last month</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(20,184,166,.12)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-num">43</div>
+                <div class="stat-lbl">Pending Orders</div>
+                <span class="stat-trend dn">↓ 2.3% vs last month</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(139,92,246,.12)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
+              </div>
+              <div class="stat-body">
+                <div class="stat-num">3.47%</div>
+                <div class="stat-lbl">Conversion Rate</div>
+                <span class="stat-trend up">↑ 0.8% vs last month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+       ROW 2 — Charts (col-md-6 each)
+  ============================================================ -->
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="card">
+              <div class="card-hdr">
+                <div class="card-hdr-txt">
+                  <div class="card-title">Monthly Revenue</div>
+                  <div class="card-sub">Gross income by month — fiscal year 2024</div>
+                </div>
+                <span class="card-tag">↑ 12.4%</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="card">
+              <div class="card-hdr">
+                <div class="card-hdr-txt">
+                  <div class="card-title">User Growth</div>
+                  <div class="card-sub">New registrations over the last 12 weeks</div>
+                </div>
+                <span class="card-tag">↑ 8.1%</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+       ROW 3 — Tables (col-md-6 each)
+  ============================================================ -->
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="card">
+              <div class="card-hdr">
+                <div class="card-hdr-txt">
+                  <div class="card-title">Recent Transactions</div>
+                  <div class="card-sub">Latest payment activity across all accounts</div>
+                </div>
+                <span class="card-tag">Live</span>
+              </div>
+              <div class="card-body" style="padding-top:0;padding-bottom:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt">AL</div>Aria Liu
+                          </div>
+                        </td>
+                        <td><strong>$1,240</strong></td>
+                        <td>Jun 1</td>
+                        <td><span class="pill ok"><span class="pill-dot"></span>Paid</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#6366f1">MK</div>Marco Klein
+                          </div>
+                        </td>
+                        <td><strong>$380</strong></td>
+                        <td>May 30</td>
+                        <td><span class="pill warn"><span class="pill-dot"></span>Pending</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#14b8a6">SR</div>Sana Rauf
+                          </div>
+                        </td>
+                        <td><strong>$2,090</strong></td>
+                        <td>May 29</td>
+                        <td><span class="pill ok"><span class="pill-dot"></span>Paid</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#f59e0b">DH</div>Dev Huang
+                          </div>
+                        </td>
+                        <td><strong>$145</strong></td>
+                        <td>May 28</td>
+                        <td><span class="pill bad"><span class="pill-dot"></span>Failed</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#ec4899">PV</div>Priya V.
+                          </div>
+                        </td>
+                        <td><strong>$799</strong></td>
+                        <td>May 27</td>
+                        <td><span class="pill ok"><span class="pill-dot"></span>Paid</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="card">
+              <div class="card-hdr">
+                <div class="card-hdr-txt">
+                  <div class="card-title">Team Members</div>
+                  <div class="card-sub">Performance overview this week</div>
+                </div>
+                <span class="card-tag">5 Active</span>
+              </div>
+              <div class="card-body" style="padding-top:0;padding-bottom:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Member</th>
+                        <th>Role</th>
+                        <th>Tasks</th>
+                        <th>Δ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt">JD</div>John Doe
+                          </div>
+                        </td>
+                        <td>Super Admin</td>
+                        <td>42</td>
+                        <td><span class="tup">↑ 18%</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#6366f1">EM</div>Eva Müller
+                          </div>
+                        </td>
+                        <td>Editor</td>
+                        <td>29</td>
+                        <td><span class="tup">↑ 5%</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#14b8a6">RN</div>Raj Nair
+                          </div>
+                        </td>
+                        <td>Developer</td>
+                        <td>61</td>
+                        <td><span class="tdn">↓ 3%</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#f59e0b">CL</div>Clara Lee
+                          </div>
+                        </td>
+                        <td>Designer</td>
+                        <td>18</td>
+                        <td><span class="tup">↑ 22%</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="ucell">
+                            <div class="uavt" style="background:#ec4899">TP</div>Tom Park
+                          </div>
+                        </td>
+                        <td>Analyst</td>
+                        <td>35</td>
+                        <td><span class="tdn">↓ 1%</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+       ROW 4 — UI Component Kit (col-12)
+  ============================================================ -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-hdr">
+                <div class="card-hdr-txt">
+                  <div class="card-title">UI Component Kit</div>
+                  <div class="card-sub">Buttons · Badges · Avatars · Icons · Alerts · Progress · Toggles · Tooltips ·
+                    Dropdowns</div>
+                </div>
+                <span class="card-tag">Toolkit</span>
+              </div>
+              <div class="card-body">
+
+                <!-- Buttons: Variants -->
+                <div class="cs">
+                  <div class="cs-lbl">Buttons — Variants</div>
+                  <div class="cs-row">
+                    <button class="btn btn-primary">Primary</button>
+                    <button class="btn btn-secondary">Secondary</button>
+                    <button class="btn btn-outline">Outline</button>
+                    <button class="btn btn-ghost">Ghost</button>
+                    <button class="btn btn-danger">Danger</button>
+                    <button class="btn btn-success">Success</button>
+                    <button class="btn btn-warning">Warning</button>
+                  </div>
+                </div>
+
+                <!-- Buttons: Sizes + Icon + Loading -->
+                <div class="cs">
+                  <div class="cs-lbl">Buttons — Sizes · Icon · Loading</div>
+                  <div class="cs-row" style="align-items:center">
+                    <button class="btn btn-primary btn-xs">XSmall</button>
+                    <button class="btn btn-primary btn-sm">Small</button>
+                    <button class="btn btn-primary">Default</button>
+                    <button class="btn btn-primary btn-lg">Large</button>
+                    <button class="btn btn-secondary btn-loading">Loading</button>
+                    <button class="btn btn-secondary btn-icon" title="Settings">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                      </svg>
+                    </button>
+                    <button class="btn btn-outline btn-icon btn-lg" title="Add">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Badges -->
+                <div class="cs">
+                  <div class="cs-lbl">Badges</div>
+                  <div class="cs-row">
+                    <span class="badge badge-primary">Primary</span>
+                    <span class="badge badge-success"><span class="badge-dot"></span>Active</span>
+                    <span class="badge badge-warning"><span class="badge-dot"></span>Pending</span>
+                    <span class="badge badge-danger">Error</span>
+                    <span class="badge badge-info">Info</span>
+                    <span class="badge badge-neutral">Neutral</span>
+                    <span class="badge badge-primary badge-sq">Square</span>
+                    <span class="badge badge-success" style="font-size:.75rem;padding:4px 11px">Large</span>
+                    <span class="badge badge-danger" style="font-size:.6rem;padding:2px 6px">XS</span>
+                  </div>
+                </div>
+
+                <!-- Avatars -->
+                <div class="cs">
+                  <div class="cs-lbl">Avatars — Sizes · Square · Group</div>
+                  <div class="cs-row" style="gap:18px;flex-wrap:wrap;align-items:center">
+                    <div style="display:flex;gap:6px;align-items:center">
+                      <div class="av av-xs" style="background:#eb5e28">J</div>
+                      <div class="av av-sm" style="background:#6366f1">M</div>
+                      <div class="av av-md" style="background:#14b8a6">S</div>
+                      <div class="av av-lg" style="background:#f59e0b">D</div>
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center">
+                      <div class="av av-sm av-sq" style="background:#ec4899">P</div>
+                      <div class="av av-md av-sq" style="background:#8b5cf6">R</div>
+                      <div class="av av-md av-sq" style="background:#0ea5e9">C</div>
+                    </div>
+                    <div class="av-group">
+                      <div class="av av-sm" style="background:#eb5e28">J</div>
+                      <div class="av av-sm" style="background:#6366f1">M</div>
+                      <div class="av av-sm" style="background:#14b8a6">S</div>
+                      <div class="av av-sm" style="background:#f59e0b">D</div>
+                      <div class="av av-sm"
+                        style="background:var(--surface);color:var(--text-lo);font-size:.58rem;border:2px solid var(--card-bg)">
+                        +4</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Icon Grid -->
+                <div class="cs">
+                  <div class="cs-lbl">Icon Chips (hover to highlight)</div>
+                  <div class="icon-grid">
+                    <div class="icon-chip" title="Home"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                      </svg></div>
+                    <div class="icon-chip" title="Users"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg></div>
+                    <div class="icon-chip" title="Analytics"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                      </svg></div>
+                    <div class="icon-chip" title="Bell"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                      </svg></div>
+                    <div class="icon-chip" title="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                      </svg></div>
+                    <div class="icon-chip" title="Lock"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg></div>
+                    <div class="icon-chip" title="Mail"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                      </svg></div>
+                    <div class="icon-chip" title="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      </svg></div>
+                    <div class="icon-chip" title="Add"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg></div>
+                    <div class="icon-chip" title="Delete"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6" />
+                        <path d="M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg></div>
+                    <div class="icon-chip" title="Edit"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg></div>
+                    <div class="icon-chip" title="Download"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </svg></div>
+                    <div class="icon-chip" title="Upload"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg></div>
+                    <div class="icon-chip" title="Share"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3" />
+                        <circle cx="6" cy="12" r="3" />
+                        <circle cx="18" cy="19" r="3" />
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                      </svg></div>
+                    <div class="icon-chip" title="Star"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon
+                          points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg></div>
+                    <div class="icon-chip" title="Heart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                      </svg></div>
+                    <div class="icon-chip" title="Calendar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg></div>
+                    <div class="icon-chip" title="Globe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg></div>
+                    <div class="icon-chip" title="Filter"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                      </svg></div>
+                    <div class="icon-chip" title="Copy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                      </svg></div>
+                  </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="cs">
+                  <div class="cs-lbl">Alerts / Banners</div>
+                  <div class="alert alert-ok"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <div class="alert-t"><strong>Success</strong>Your changes have been saved successfully.</div>
+                  </div>
+                  <div class="alert alert-warn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <div class="alert-t"><strong>Warning</strong>Subscription renews in 3 days.</div>
+                  </div>
+                  <div class="alert alert-err"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <div class="alert-t"><strong>Error</strong>Failed to connect to the remote server.</div>
+                  </div>
+                  <div class="alert alert-inf"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="16" x2="12" y2="12" />
+                      <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                    <div class="alert-t"><strong>Info</strong>New feature rollout scheduled for next Tuesday.</div>
+                  </div>
+                </div>
+
+                <!-- Progress Bars -->
+                <div class="cs">
+                  <div class="cs-lbl">Progress Bars</div>
+                  <div class="pbar-wrap">
+                    <div class="pbar-meta"><span>Storage Used</span><span>78%</span></div>
+                    <div class="pbar-track">
+                      <div class="pbar-fill" style="width:78%"></div>
+                    </div>
+                  </div>
+                  <div class="pbar-wrap">
+                    <div class="pbar-meta"><span>Tasks Done</span><span>55%</span></div>
+                    <div class="pbar-track">
+                      <div class="pbar-fill ok" style="width:55%"></div>
+                    </div>
+                  </div>
+                  <div class="pbar-wrap">
+                    <div class="pbar-meta"><span>Budget Spent</span><span>91%</span></div>
+                    <div class="pbar-track">
+                      <div class="pbar-fill warn" style="width:91%"></div>
+                    </div>
+                  </div>
+                  <div class="pbar-wrap">
+                    <div class="pbar-meta"><span>Error Rate</span><span>12%</span></div>
+                    <div class="pbar-track">
+                      <div class="pbar-fill bad" style="width:12%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Toggles -->
+                <div class="cs">
+                  <div class="cs-lbl">Toggle Switches</div>
+                  <div class="cs-row" style="gap:22px;flex-wrap:wrap">
+                    <label class="tgl-wrap"><label class="tgl"><input type="checkbox" checked><span
+                          class="tgl-slider"></span></label>Notifications</label>
+                    <label class="tgl-wrap"><label class="tgl"><input type="checkbox"><span
+                          class="tgl-slider"></span></label>Dark Mode</label>
+                    <label class="tgl-wrap"><label class="tgl"><input type="checkbox" checked><span
+                          class="tgl-slider"></span></label>Auto-save</label>
+                    <label class="tgl-wrap"><label class="tgl"><input type="checkbox"><span
+                          class="tgl-slider"></span></label>Beta Features</label>
+                  </div>
+                </div>
+
+                <!-- Tooltips -->
+                <div class="cs">
+                  <div class="cs-lbl">Tooltips (hover to reveal)</div>
+                  <div class="cs-row">
+                    <button class="btn btn-secondary" data-tip="This is a tooltip!">Hover me</button>
+                    <button class="btn btn-outline" data-tip="Save your progress">Save</button>
+                    <button class="btn btn-ghost" data-tip="Opens in new tab">External</button>
+                    <span class="badge badge-primary" data-tip="Version 2.4.1" style="cursor:default">v2.4</span>
+                  </div>
+                </div>
+
+                <!-- Dropdown Demo -->
+                <div class="cs">
+                  <div class="cs-lbl">Dropdown Examples</div>
+                  <div class="cs-row">
+                    <div class="c-dd">
+                      <button class="btn btn-primary" onclick="toggleCDD('cdd1')">
+                        Actions
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
+                      <div class="c-dd-panel" id="cdd1">
+                        <div class="c-dd-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                          </svg>Edit</div>
+                        <div class="c-dd-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" />
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                          </svg>Duplicate</div>
+                        <div class="c-dd-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                          </svg>Export</div>
+                        <div style="height:1px;background:var(--border);margin:4px 0"></div>
+                        <div class="c-dd-item red"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6l-1 14H6L5 6" />
+                          </svg>Delete</div>
+                      </div>
+                    </div>
+                    <div class="c-dd">
+                      <button class="btn btn-secondary btn-icon" onclick="toggleCDD('cdd2')" title="More">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="5" r="1" />
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="12" cy="19" r="1" />
+                        </svg>
+                      </button>
+                      <div class="c-dd-panel" id="cdd2">
+                        <div class="c-dd-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3" />
+                            <circle cx="6" cy="12" r="3" />
+                            <circle cx="18" cy="19" r="3" />
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                          </svg>Share</div>
+                        <div class="c-dd-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polygon
+                              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                          </svg>Favourite</div>
+                        <div class="c-dd-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                          </svg>Send Email</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div><!-- /card-body -->
+            </div><!-- /card -->
+          </div>
+        </div>
+
+        <!-- ============================================================
+       ROW 5 — Form Inputs (col-12)
+  ============================================================ -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-hdr">
+                <div class="card-hdr-txt">
+                  <div class="card-title">Form Input Library</div>
+                  <div class="card-sub">Searchable select · Text · Number · Textarea · Checkbox · Radio · Dropzone file
+                    upload</div>
+                </div>
+                <span class="card-tag">Inputs</span>
+              </div>
+              <div class="card-body">
+
+                <div class="row" style="margin-top:0">
+                  <!-- LEFT COLUMN -->
+                  <div class="col-12 col-md-6" style="margin-bottom:0">
+
+                    <!-- Searchable Select -->
+                    <div class="fg">
+                      <div class="fl">Country <span class="req">*</span></div>
+                      <div class="csel" id="csel">
+                        <button type="button" class="csel-trig" id="cselTrig" onclick="toggleCsel()">
+                          <span id="cselDisplay" class="ph">Choose a country…</span>
+                        </button>
+                        <svg class="csel-arr" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                        <div class="csel-panel" id="cselPanel">
+                          <div class="csel-search"><input type="text" id="cselQ" placeholder="Search…"
+                              oninput="filterCsel()" /></div>
+                          <div class="csel-opts" id="cselOpts">
+                            <div class="csel-opt" onclick="pickCsel(this,'Indonesia')">Indonesia</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'United States')">United States</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'Japan')">Japan</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'Germany')">Germany</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'Brazil')">Brazil</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'United Kingdom')">United Kingdom</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'France')">France</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'India')">India</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'Canada')">Canada</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'Australia')">Australia</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'South Korea')">South Korea</div>
+                            <div class="csel-opt" onclick="pickCsel(this,'Netherlands')">Netherlands</div>
+                          </div>
+                          <div class="csel-empty" id="cselEmpty" style="display:none">No results found</div>
+                        </div>
+                      </div>
+                      <div class="fhint">Start typing to filter the list</div>
+                    </div>
+
+                    <!-- Text input with icon -->
+                    <div class="fg">
+                      <div class="fl">Full Name <span class="req">*</span></div>
+                      <div class="fi-wrap">
+                        <svg class="fi-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                          <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="text" class="fi" placeholder="John Doe" />
+                      </div>
+                    </div>
+
+                    <!-- Email with addon -->
+                    <div class="fg">
+                      <div class="fl">Email Address</div>
+                      <div class="fi-group">
+                        <span class="fi-addon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                          </svg></span>
+                        <input type="email" class="fi" placeholder="you@company.com" />
+                      </div>
+                    </div>
+
+                    <!-- Number -->
+                    <div class="fg">
+                      <div class="fl">Age</div>
+                      <div class="fi-wrap">
+                        <svg class="fi-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                        <input type="number" class="fi" placeholder="25" min="0" max="120" />
+                      </div>
+                      <div class="fhint">Value between 0 and 120</div>
+                    </div>
+
+                    <!-- Textarea -->
+                    <div class="fg">
+                      <div class="fl">Bio / Description</div>
+                      <textarea class="fi fi-ta" placeholder="Write a short description about yourself…"></textarea>
+                      <div class="fhint">Max 500 characters</div>
+                    </div>
+
+                  </div><!-- /left col -->
+
+                  <!-- RIGHT COLUMN -->
+                  <div class="col-12 col-md-6" style="margin-bottom:0">
+
+                    <!-- Checkboxes -->
+                    <div class="fg">
+                      <div class="fl">Preferences</div>
+                      <label class="chk-wrap"><input type="checkbox" class="chk-in" checked><span
+                          class="chk-box"></span>Receive email notifications</label>
+                      <label class="chk-wrap"><input type="checkbox" class="chk-in"><span
+                          class="chk-box"></span>Subscribe to weekly digest</label>
+                      <label class="chk-wrap"><input type="checkbox" class="chk-in" checked><span
+                          class="chk-box"></span>Enable two-factor authentication</label>
+                      <label class="chk-wrap"><input type="checkbox" class="chk-in"><span class="chk-box"></span>Share
+                        anonymous usage data</label>
+                    </div>
+
+                    <!-- Radio buttons -->
+                    <div class="fg">
+                      <div class="fl">Account Plan</div>
+                      <label class="rdo-wrap"><input type="radio" name="plan" class="rdo-in" checked><span
+                          class="rdo-circ"></span>Free — Basic features only</label>
+                      <label class="rdo-wrap"><input type="radio" name="plan" class="rdo-in"><span
+                          class="rdo-circ"></span>Pro — Unlimited access</label>
+                      <label class="rdo-wrap"><input type="radio" name="plan" class="rdo-in"><span
+                          class="rdo-circ"></span>Enterprise — Custom pricing</label>
+                    </div>
+
+                    <!-- Disabled input -->
+                    <div class="fg">
+                      <div class="fl">User ID (read-only)</div>
+                      <input type="text" class="fi" value="usr_20260614_jd" disabled />
+                      <div class="fhint">Auto-generated — cannot be changed</div>
+                    </div>
+
+                    <!-- File Dropzone -->
+                    <div class="fg">
+                      <div class="fl">Upload Files</div>
+                      <div class="dz" id="dz" onclick="document.getElementById('dzInput').click()"
+                        ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)">
+                        <div class="dz-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                          </svg></div>
+                        <div class="dz-txt"><strong>Click to upload</strong> or drag & drop</div>
+                        <div class="dz-hint">PNG · JPG · PDF · DOCX — up to 10 MB</div>
+                      </div>
+                      <input type="file" id="dzInput" multiple style="display:none" onchange="dzSelect(event)" />
+                      <div class="dz-files" id="dzFiles"></div>
+                      <div class="fhint">Multiple files supported</div>
+                    </div>
+
+                  </div><!-- /right col -->
+                </div>
+
+                <!-- Submit row -->
+                <div
+                  style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:18px;border-top:1px solid var(--border)">
+                  <button class="btn btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Submit Form
+                  </button>
+                  <button class="btn btn-secondary">Save Draft</button>
+                  <button class="btn btn-ghost" style="margin-left:auto">Reset</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- ============================================================
+     SECTION: FOOTER (DONE)
+============================================================ -->
+      <footer class="footer" id="footer">
+        <div class="footer-in">
+          <div class="footer-copy">&copy; 2026 <strong>AdminDash</strong>. All rights reserved.</div>
+          <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Support</a>
+            <a href="#">Docs</a>
+          </div>
+          <div class="footer-v">v2.4.1 — build 20260614</div>
+        </div>
+      </footer>
+
+    </div><!-- /layout-body -->
+  </div><!-- /layout -->
+
+  <!-- ============================================================
+     SECTION: JAVASCRIPT
+============================================================ -->
+  <script>
+    /* ============================================================
+       JS SECTION: THEME TOGGLE
+    ============================================================ */
+    const SUN = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+    const MOON = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+    function toggleTheme() {
+      const h = document.documentElement, i = document.getElementById('themeIco');
+      const dark = h.getAttribute('data-theme') === 'dark';
+      h.setAttribute('data-theme', dark ? 'light' : 'dark');
+      i.innerHTML = dark ? SUN : MOON;
+      rebuildCharts();
+    }
+
+    /* ============================================================
+       JS SECTION: SIDEBAR TOGGLE (desktop collapse)
+    ============================================================ */
+    function toggleSb() {
+      const sb = document.getElementById('sidebar');
+      const c = sb.classList.toggle('collapsed');
+      document.getElementById('topbar').classList.toggle('sc', c);
+      document.getElementById('mainContent').classList.toggle('sc', c);
+      document.getElementById('footer').classList.toggle('sc', c);
+    }
+
+    /* ============================================================
+       JS SECTION: MOBILE SIDEBAR
+    ============================================================ */
+    function openMob() {
+      document.getElementById('sidebar').classList.add('mob-open');
+      document.getElementById('sbOverlay').classList.add('show');
+    }
+    function closeMob() {
+      document.getElementById('sidebar').classList.remove('mob-open');
+      document.getElementById('sbOverlay').classList.remove('show');
+    }
+
+    /* ============================================================
+       JS SECTION: TOPBAR DROPDOWNS
+    ============================================================ */
+    function toggleDD(id) {
+      document.querySelectorAll('.dd-menu').forEach(m => { if (m.id !== id) m.classList.remove('open') });
+      document.getElementById(id).classList.toggle('open');
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.dd-wrap') && !e.target.closest('.c-dd') && !e.target.closest('#csel'))
+        document.querySelectorAll('.dd-menu,.c-dd-panel,.csel-panel').forEach(m => m.classList.remove('open'));
+    });
+
+    /* ============================================================
+       JS SECTION: COMPONENT CARD DROPDOWNS
+    ============================================================ */
+    function toggleCDD(id) {
+      document.querySelectorAll('.c-dd-panel').forEach(p => { if (p.id !== id) p.classList.remove('open') });
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    /* ============================================================
+       JS SECTION: SIDEBAR ACTIVE STATE
+    ============================================================ */
+    function sbActive(el) {
+      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    /* ============================================================
+       JS SECTION: SEARCHABLE SELECT
+    ============================================================ */
+    function toggleCsel() {
+      const t = document.getElementById('cselTrig'), p = document.getElementById('cselPanel');
+      const o = p.classList.contains('open');
+      if (!o) { p.classList.add('open'); t.classList.add('open'); setTimeout(() => document.getElementById('cselQ').focus(), 40); }
+      else { p.classList.remove('open'); t.classList.remove('open'); }
+    }
+    function filterCsel() {
+      const q = document.getElementById('cselQ').value.toLowerCase();
+      let vis = 0;
+      document.querySelectorAll('#cselOpts .csel-opt').forEach(o => {
+        const m = o.textContent.toLowerCase().includes(q);
+        o.classList.toggle('hide', !m); if (m) vis++;
+      });
+      document.getElementById('cselEmpty').style.display = vis ? 'none' : 'block';
+    }
+    function pickCsel(el, v) {
+      document.querySelectorAll('#cselOpts .csel-opt').forEach(o => o.classList.remove('sel'));
+      el.classList.add('sel');
+      const d = document.getElementById('cselDisplay');
+      d.textContent = v; d.classList.remove('ph');
+      document.getElementById('cselPanel').classList.remove('open');
+      document.getElementById('cselTrig').classList.remove('open');
+      document.getElementById('cselQ').value = ''; filterCsel();
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#csel')) {
+        document.getElementById('cselPanel')?.classList.remove('open');
+        document.getElementById('cselTrig')?.classList.remove('open');
+      }
+    });
+
+    /* ============================================================
+       JS SECTION: FILE DROPZONE
+    ============================================================ */
+    function dzOver(e) { e.preventDefault(); document.getElementById('dz').classList.add('over') }
+    function dzLeave() { document.getElementById('dz').classList.remove('over') }
+    function dzDrop(e) { e.preventDefault(); dzLeave(); addFiles([...e.dataTransfer.files]) }
+    function dzSelect(e) { addFiles([...e.target.files]) }
+    const fIco = {
+      pdf: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+      img: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
+      doc: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+      def: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
+    };
+    function getFIco(n) { const e = n.split('.').pop().toLowerCase(); if (['pdf'].includes(e)) return fIco.pdf; if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(e)) return fIco.img; if (['doc', 'docx', 'txt'].includes(e)) return fIco.doc; return fIco.def; }
+    function fmtSz(b) { if (b < 1024) return b + ' B'; if (b < 1048576) return (b / 1024).toFixed(1) + ' KB'; return (b / 1048576).toFixed(1) + ' MB'; }
+    function addFiles(files) {
+      const c = document.getElementById('dzFiles');
+      files.forEach(f => {
+        const id = 'f_' + Math.random().toString(36).substr(2, 6);
+        const el = document.createElement('div'); el.className = 'dz-file'; el.id = id;
+        el.innerHTML = `<div class="dz-fname">${getFIco(f.name)}<span title="${f.name}">${f.name}</span></div><span style="font-size:.66rem;color:var(--text-lo);white-space:nowrap">${fmtSz(f.size)}</span><button class="dz-rm" onclick="rmFile('${id}')" title="Remove"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
+        c.appendChild(el);
+      });
+    }
+    function rmFile(id) { document.getElementById(id)?.remove() }
+
+    /* ============================================================
+       JS SECTION: CHART THEME COLOURS
+    ============================================================ */
+    let barC = null, lineC = null;
+    function chartColors() {
+      const dk = document.documentElement.getAttribute('data-theme') === 'dark';
+      return {
+        accent: dk ? '#ffc300' : '#eb5e28',
+        soft: dk ? 'rgba(255,195,0,.16)' : 'rgba(235,94,40,.13)',
+        grid: dk ? 'rgba(255,195,0,.06)' : 'rgba(64,61,57,.08)',
+        label: dk ? '#ffc300' : '#403d39',
+      };
+    }
+    function rebuildCharts() {
+      if (barC) { barC.destroy(); barC = null }
+      if (lineC) { lineC.destroy(); lineC = null }
+      buildBar(); buildLine();
+    }
+
+    /* ============================================================
+       JS SECTION: BAR CHART — Monthly Revenue
+    ============================================================ */
+    function buildBar() {
+      const c = chartColors(), ctx = document.getElementById('barChart').getContext('2d');
+      barC = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: 'Revenue ($k)', data: [42, 55, 48, 61, 70, 65, 78, 82, 74, 89, 94, 102],
+            backgroundColor: c.soft, borderColor: c.accent, borderWidth: 2, borderRadius: 6, borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { backgroundColor: c.accent, titleColor: '#fff', bodyColor: '#fff', padding: 10, cornerRadius: 8, callbacks: { label: x => ` $${x.parsed.y}k` } }
+          },
+          scales: {
+            x: { grid: { color: c.grid }, ticks: { color: c.label, font: { family: 'DM Mono', size: 10 } } },
+            y: { grid: { color: c.grid }, ticks: { color: c.label, font: { family: 'DM Mono', size: 10 }, callback: v => `$${v}k` } }
+          }
+        }
+      });
+    }
+
+    /* ============================================================
+       JS SECTION: LINE CHART — User Growth
+    ============================================================ */
+    function buildLine() {
+      const c = chartColors(), ctx = document.getElementById('lineChart').getContext('2d');
+      const g = ctx.createLinearGradient(0, 0, 0, 225);
+      g.addColorStop(0, c.soft); g.addColorStop(1, 'rgba(0,0,0,0)');
+      lineC = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Wk1', 'Wk2', 'Wk3', 'Wk4', 'Wk5', 'Wk6', 'Wk7', 'Wk8', 'Wk9', 'Wk10', 'Wk11', 'Wk12'],
+          datasets: [{
+            label: 'New Users', data: [210, 240, 195, 310, 280, 360, 390, 420, 405, 470, 510, 550],
+            fill: true, backgroundColor: g, borderColor: c.accent, borderWidth: 2.5,
+            pointBackgroundColor: c.accent, pointRadius: 3, pointHoverRadius: 5, tension: .42
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { backgroundColor: c.accent, titleColor: '#fff', bodyColor: '#fff', padding: 10, cornerRadius: 8 }
+          },
+          scales: {
+            x: { grid: { color: c.grid }, ticks: { color: c.label, font: { family: 'DM Mono', size: 10 } } },
+            y: { grid: { color: c.grid }, ticks: { color: c.label, font: { family: 'DM Mono', size: 10 } } }
+          }
+        }
+      });
+    }
+
+    /* ============================================================
+       JS SECTION: INIT
+    ============================================================ */
+    window.addEventListener('DOMContentLoaded', () => { buildBar(); buildLine() });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+/* ============================================================
+   SECTION: ACTIVE THEME MAPPING
+   Maps semantic tokens to whichever palette is active.
+============================================================ */
+[data-theme="light"] {
+    --bg: var(--l-bg);
+    --surface: var(--l-surface);
+    --text-hi: var(--l-text-hi);
+    --text: var(--l-text);
+    --text-lo: var(--l-text-lo);
+    --accent: var(--l-accent);
+    --accent-dk: var(--l-accent-dk);
+    --accent-gl: var(--l-accent-gl);
+    --border: var(--l-border);
+    --border-hi: var(--l-border-hi);
+    --shadow-sm: var(--l-shadow-sm);
+    --shadow-md: var(--l-shadow-md);
+    --sidebar-bg: var(--l-sidebar-bg);
+    --sidebar-txt: var(--l-sidebar-txt);
+    --sidebar-act: var(--l-sidebar-act);
+    --topbar-bg: var(--l-topbar-bg);
+    --footer-bg: var(--l-footer-bg);
+    --footer-txt: var(--l-footer-txt);
+    --input-bg: var(--l-input-bg);
+    --input-bdr: var(--l-input-bdr);
+    --input-fcs: var(--l-input-fcs);
+    --card-bg: var(--l-bg);
+}
+
+[data-theme="dark"] {
+    --bg: var(--d-bg);
+    --surface: var(--d-surface);
+    --text-hi: var(--d-text-hi);
+    --text: var(--d-text);
+    --text-lo: var(--d-text-lo);
+    --accent: var(--d-accent);
+    --accent-dk: var(--d-accent-dk);
+    --accent-gl: var(--d-accent-gl);
+    --border: var(--d-border);
+    --border-hi: var(--d-border-hi);
+    --shadow-sm: var(--d-shadow-sm);
+    --shadow-md: var(--d-shadow-md);
+    --sidebar-bg: var(--d-sidebar-bg);
+    --sidebar-txt: var(--d-sidebar-txt);
+    --sidebar-act: var(--d-sidebar-act);
+    --topbar-bg: var(--d-topbar-bg);
+    --footer-bg: var(--d-footer-bg);
+    --footer-txt: var(--d-footer-txt);
+    --input-bg: var(--d-input-bg);
+    --input-bdr: var(--d-input-bdr);
+    --input-fcs: var(--d-input-fcs);
+    --card-bg: var(--d-surface);
+}
