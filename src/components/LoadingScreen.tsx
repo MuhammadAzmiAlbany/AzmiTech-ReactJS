@@ -1,7 +1,7 @@
 export default function LoadingScreen() {
     return (
         <>
-            {/* <div id="splash">
+            <div id="splash">
                 <div className="splash-ring-wrap">
                     <div className="splash-ring"></div>
                     <div className="splash-logo">
@@ -9,7 +9,7 @@ export default function LoadingScreen() {
                     </div>
                 </div>
                 <p className="splash-label">Loading</p>
-            </div> */}
+            </div>
         </>
     );
 }

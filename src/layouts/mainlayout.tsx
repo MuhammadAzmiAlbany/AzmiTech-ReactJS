@@ -4,7 +4,6 @@ import { closeMob } from '../ts/main.ts'
 import Topbar from './topbar';
 import Sidebar from './sidebar';
 import Bottombar from './bottombar';
-import LoadingScreen from '../components/LoadingScreen.tsx';
 import '../ts/loading-screen'
 
 
@@ -17,8 +16,7 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
     return (
         <div>
-            <LoadingScreen/>
-            <div className='sb-overlay' id='sbOverlay' onClick={ closeMob }></div>
+            <div className='sb-overlay' id='sbOverlay' onClick={closeMob}></div>
 
             <div className='layout'>
                 <Sidebar />
