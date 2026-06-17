@@ -1,5 +1,4 @@
 // src/pages/Dashboard.tsx
-import MainLayout from './layouts/mainlayout';
 import {
     toggleCDD,
     toggleCsel,
@@ -9,12 +8,11 @@ import {
     dzLeave,
     dzDrop,
     dzSelect
-} from './ts/main'
+} from '../ts/main'
 
 export default function Dashboard() {
     return (
-        <MainLayout>
-            {/* Page Header */}
+        <>
             <div className="page-hdr">
                 <div className="page-hdr-left">
                     <h1>Good morning, John 👋</h1>
@@ -56,9 +54,6 @@ export default function Dashboard() {
                     </button>
                 </div>
             </div>
-            {/* ============================================================
- ROW 1 — Stat Cards (col-6 col-lg-3 each = 4-up on large screens)
-  ============================================================ */}
             <div className="row">
                 <div className="col-6 col-lg-3">
                     <div className="stat-card">
@@ -172,9 +167,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            {/* ============================================================
- ROW 2 — Charts (col-md-6 each)
-  ============================================================ */}
             <div className="row">
                 <div className="col-12 col-md-6">
                     <div className="card">
@@ -213,9 +205,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            {/* ============================================================
- ROW 3 — Tables (col-md-6 each)
-  ============================================================ */}
             <div className="row">
                 <div className="col-12 col-md-6">
                     <div className="card">
@@ -443,9 +432,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            {/* ============================================================
- ROW 4 — UI Component Kit (col-12)
-  ============================================================ */}
             <div className="row">
                 <div className="col-12">
                     <div className="card">
@@ -1114,7 +1100,7 @@ export default function Dashboard() {
                                 <div className="cs-lbl">Dropdown Examples</div>
                                 <div className="cs-row">
                                     <div className="c-dd">
-                                        <button className="btn btn-primary" onClick={ () => toggleCDD('cdd1') }>
+                                        <button className="btn btn-primary" onClick={() => toggleCDD('cdd1')}>
                                             Actions
                                             <svg
                                                 width={13}
@@ -1199,7 +1185,7 @@ export default function Dashboard() {
                                     <div className="c-dd">
                                         <button
                                             className="btn btn-secondary btn-icon"
-                                            onClick={ () => toggleCDD('cdd2') }
+                                            onClick={() => toggleCDD('cdd2')}
                                             title="More"
                                         >
                                             <svg
@@ -1272,9 +1258,6 @@ export default function Dashboard() {
                     {/* /card */}
                 </div>
             </div>
-            {/* ============================================================
- ROW 5 — Form Inputs (col-12)
-  ============================================================ */}
             <div className="row">
                 <div className="col-12">
                     <div className="card">
@@ -1302,7 +1285,7 @@ export default function Dashboard() {
                                                 type="button"
                                                 className="csel-trig"
                                                 id="cselTrig"
-                                                onClick={ toggleCsel }
+                                                onClick={toggleCsel}
                                             >
                                                 <span id="cselDisplay" className="ph">
                                                     Choose a country…
@@ -1602,7 +1585,7 @@ export default function Dashboard() {
                                             type="file"
                                             id="dzInput"
                                             style={{ display: "none" }}
-                                            onChange={ (event) => dzSelect(event.nativeEvent) }
+                                            onChange={(event) => dzSelect(event.nativeEvent)}
                                         />
                                         <div className="dz-files" id="dzFiles" />
                                         <div className="fhint">Multiple files supported</div>
@@ -1645,7 +1628,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-
-        </MainLayout>
+        </>
     );
 }

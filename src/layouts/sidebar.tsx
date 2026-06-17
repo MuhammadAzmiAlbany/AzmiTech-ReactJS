@@ -1,4 +1,5 @@
 import { toggleSb, sbActive } from '../ts/main.ts'
+import { Link } from 'react-router-dom';
 
 export default function Sidebar() {
     return (
@@ -12,43 +13,67 @@ export default function Sidebar() {
                 {/* Navigation */}
                 <nav className="sb-nav">
                     <div className="sb-section">Main</div>
-                    <div className="sb-item active" onClick={(e) => sbActive(e.currentTarget)}>
-                        <svg
-                            width={20}
-                            height={20}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <rect x={3} y={3} width={7} height={7} />
-                            <rect x={14} y={3} width={7} height={7} />
-                            <rect x={14} y={14} width={7} height={7} />
-                            <rect x={3} y={14} width={7} height={7} />
-                        </svg>
-                        <span className="sb-label">Dashboard</span>
-                    </div>
-                    <div className="sb-item" onClick={(e) => sbActive(e.currentTarget)}>
-                        <svg
-                            width={20}
-                            height={20}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                            <circle cx={9} cy={7} r={4} />
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                        </svg>
-                        <span className="sb-label">Users</span>
-                        <span className="sb-badge">24</span>
-                    </div>
+                    <Link to="/">
+                        <div className="sb-item active" onClick={(e) => sbActive(e.currentTarget)}>
+                            <svg
+                                width={20}
+                                height={20}
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <rect x={3} y={3} width={7} height={7} />
+                                <rect x={14} y={3} width={7} height={7} />
+                                <rect x={14} y={14} width={7} height={7} />
+                                <rect x={3} y={14} width={7} height={7} />
+                            </svg>
+                            <span className="sb-label">Dashboard</span>
+                        </div>
+                    </Link>
+                    <Link to="/menu">
+                        <div className="sb-item" onClick={(e) => sbActive(e.currentTarget)}>
+                            <svg
+                                width={20}
+                                height={20}
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <rect x={3} y={3} width={7} height={7} />
+                                <rect x={14} y={3} width={7} height={7} />
+                                <rect x={14} y={14} width={7} height={7} />
+                                <rect x={3} y={14} width={7} height={7} />
+                            </svg>
+                            <span className="sb-label">Menu</span>
+                        </div>
+                    </Link>
+                    <Link to="/users">
+                        <div className="sb-item" onClick={(e) => sbActive(e.currentTarget)}>
+                            <svg
+                                width={20}
+                                height={20}
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx={9} cy={7} r={4} />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            <span className="sb-label">Users</span>
+                            <span className="sb-badge">24</span>
+                        </div>
+                    </Link>
                     <div className="sb-item" onClick={(e) => sbActive(e.currentTarget)}>
                         <svg
                             width={20}

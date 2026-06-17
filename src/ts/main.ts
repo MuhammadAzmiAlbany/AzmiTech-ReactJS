@@ -212,8 +212,8 @@ export function rmFile(id: string): void {
 async function starterPage(): Promise<void> {
     const h = document.documentElement;
     h.setAttribute('data-theme', 'dark');
-    await delay(500);
-    loadingScreen();
+    // await delay(500);
+    // loadingScreen();
 }
 
 function loadingScreen(): void {
