@@ -1,7 +1,8 @@
-import { useState, useEffect, Children } from 'react';
+import { useState, useEffect } from 'react';
 import Button from "../components/Button";
 import Card from '../components/Card';
 import Table from '../components/Table';
+import TableEmptyValue from '../components/TableEmptyValue';
 
 interface MenuStruct {
     id: string;
@@ -71,24 +72,16 @@ export default function Menu() {
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
-
                             }
                             body={
                                 <>
                                     {isLoading ? (
-                                        <tr>
-                                            <td colSpan={5} style={{ textAlign: "center" }}>
-                                                <strong>Data Kosong</strong>
-                                            </td>
-                                        </tr>
+                                        <TableEmptyValue cspan={5} />
                                     )
                                         :
                                         (menus.length === 0 || error) ? (
-                                            <tr>
-                                                <td colSpan={5} style={{ textAlign: "center" }}>
-                                                    <strong>Data Kosong</strong>
-                                                </td>
-                                            </tr>)
+                                            <TableEmptyValue cspan={5} />
+                                        )
                                             : (
                                                 menus.map((menu) => (
                                                     <tr key={menu.id}>
