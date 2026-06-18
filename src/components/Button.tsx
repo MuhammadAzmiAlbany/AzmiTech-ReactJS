@@ -10,7 +10,7 @@ interface ButtonProps {
 export default function Button({ type, link, label = 'Default', size = '' }: ButtonProps) {
     return (
         <>
-            <NavLink to={link} className={"btn btn-" + type + ' ' + size}>{label}</NavLink>
+            <NavLink to={link} className={"btn btn-" + type + ' btn-' + size}>{label}</NavLink>
             {/* <NavLink to={link} className="btn btn-secondary">{label}</NavLink>
             <NavLink to={link} className="btn btn-outline">{label}</NavLink>
             <NavLink to={link} className="btn btn-ghost">{label}</NavLink>

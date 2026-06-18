@@ -113,7 +113,7 @@
 
 /* Span placeholder — remove once you have a real logo */
 .splash-logo span {
-    font-family: "Syne", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 800;
     font-size: 1.6rem;
     color: #f0ead6;
@@ -138,7 +138,7 @@
 /* Loading label */
 .splash-label {
     margin-top: 28px;
-    font-family: "Syne", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.18em;

@@ -22,7 +22,7 @@ export default function Card({ children, title, subtitle, label = 'Default' }: C
                     </div>
                     <span className="card-tag">{label}</span>
                 </div>
-                <div className="card-body" style={{ paddingTop: 0, paddingBottom: 0 }}>
+                <div className="card-body">
                     {children}
                 </div>
             </div>

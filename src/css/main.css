@@ -30,7 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: var(--text-hi)
 }
 
@@ -112,7 +112,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: .95rem;
     color: #fff;
@@ -125,7 +125,7 @@ img {
 }
 
 .sb-logo-name {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: 1.05rem;
     color: var(--sidebar-txt);
@@ -304,7 +304,7 @@ img {
 .topbar-bc .bc-cur {
     color: var(--text-hi);
     font-weight: 600;
-    font-family: 'Syne', sans-serif
+    font-family: 'Montserrat', sans-serif
 }
 
 /* Action buttons */
@@ -478,7 +478,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: .7rem;
     flex-shrink: 0;
@@ -875,7 +875,7 @@ img {
 }
 
 .stat-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: 1.45rem;
     color: var(--text-hi);
@@ -954,15 +954,15 @@ img {
 }
 
 .card-title {
-    font-family: 'Syne', sans-serif;
-    font-size: .95rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.55rem;
     font-weight: 700;
     color: var(--text-hi);
     letter-spacing: -.01em;
 }
 
 .card-sub {
-    font-size: .71rem;
+    font-size: .91rem;
     color: var(--text-lo);
     margin-top: 3px
 }
@@ -1043,7 +1043,7 @@ table {
 thead th {
     padding: 9px 13px;
     text-align: left;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: .65rem;
     font-weight: 700;
     letter-spacing: .08em;
@@ -1085,7 +1085,7 @@ tbody tr:hover td {
     justify-content: center;
     font-size: .58rem;
     font-weight: 700;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     flex-shrink: 0;
 }
 
@@ -1435,7 +1435,7 @@ tbody tr:hover td {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     color: #fff;
     flex-shrink: 0;
@@ -1524,7 +1524,7 @@ tbody tr:hover td {
 .alert-t strong {
     display: block;
     font-weight: 700;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: .79rem;
     margin-bottom: 2px
 }
@@ -2299,7 +2299,7 @@ tbody tr:hover td {
 }
 
 .footer-copy strong {
-    font-family: 'Syne', sans-serif
+    font-family: 'Montserrat', sans-serif
 }
 
 .footer-links {

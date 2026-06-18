@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import Card from '../components/Card';
 import Table from '../components/Table';
 import TableEmptyValue from '../components/TableEmptyValue';
+import Select from '../components/form/Select';
 
 interface MenuStruct {
     id: string;
@@ -46,15 +47,19 @@ export default function Menu() {
         fetchMenu();
     }, []); // <-- The empty array means "Only run this once when the page loads"
 
+    // 5. Handle the UI states
+    // if (error) return <p style={{ color: 'red' }}>{error}</p>;
+
     return (
         <>
             <div className="page-hdr">
                 <div className="page-hdr-left">
                     <h1>Menu Page</h1>
                     <p>Data data menu sidebar</p>
+                    <Select label='List Parent Menu' placeholder='<=== Pilih Menu ===>' optionList={menus} />
                 </div>
                 <div className="page-hdr-right">
-                    <Button link="/menu/create" type="success" label="+ Tambah Data" size="sm"></Button>
+                    <Button link="/menu" type="success" label="+ Tambah Data"></Button>
                 </div>
             </div>
             <div className="row">
