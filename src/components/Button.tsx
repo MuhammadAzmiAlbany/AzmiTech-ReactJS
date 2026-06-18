@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom';
 
-interface SideButtonProps {
+interface ButtonProps {
     type: string,
     link: string,
     label?: string,
     size?: string
 }
 
-export default function Button({ type, link, label = 'Default', size = '' }: SideButtonProps) {
+export default function Button({ type, link, label = 'Default', size = '' }: ButtonProps) {
     return (
         <>
             <NavLink to={link} className={"btn btn-" + type + ' ' + size}>{label}</NavLink>

@@ -1,119 +1,81 @@
-import { useState, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 
-// 1. Define your data model
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
+export default function CreateCategory() {
+  // 1. Create a state to hold the exact value of the text input
+  const [categoryName, setCategoryName] = useState<string>('');
+  
+  // States for UX
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [message, setMessage] = useState<string | null>(null);
 
-// 2. Define the shape of Laravel's default paginate() JSON response
-interface LaravelPagination {
-    data: User[];
-    current_page: number;
-    last_page: number;
-    total: number;
-}
+  // 2. The function that intercepts the form submission
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // CRITICAL: Stops the browser from refreshing the page!
+    
+    setIsSubmitting(true);
+    setMessage(null);
 
-export default function UserTable() {
-    // --- STATE ---
-    const [users, setUsers] = useState<User[]>([]);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [lastPage, setLastPage] = useState<number>(1);
+    try {
+      const response = await fetch('http://localhost:8000/api/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Tells Laravel to expect JSON
+          'Accept': 'application/json',       // Tells Laravel to return JSON validation errors
+        },
+        // 3. Package your React state into the JSON body
+        body: JSON.stringify({ name: categoryName }) 
+      });
 
-    // This is your localized "loading thingy"
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+      if (!response.ok) {
+        // Handle Laravel validation errors (422 Unprocessable Entity)
+        if (response.status === 422) {
+          throw new Error('Validation failed. Name might be taken.');
+        }
+        throw new Error('Something went wrong on the server.');
+      }
 
-    // --- FETCH LOGIC ---
-    useEffect(() => {
-        const fetchUsers = async () => {
-            setIsLoading(true); // Turn on the spinner
+      setMessage('Category created successfully!');
+      setCategoryName(''); // Clear the input field on success
+      
+    } catch (err: any) {
+      setMessage(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-            try {
-                // Fetch from Laravel, passing the current page dynamically
-                const response = await fetch(`http://localhost:8000/api/users?page=${currentPage}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-
-                const result: LaravelPagination = await response.json();
-
-                // Update states with Laravel's paginated data
-                setUsers(result.data);
-                setCurrentPage(result.current_page);
-                setLastPage(result.last_page);
-            } catch (error) {
-                console.error("Failed to fetch users:", error);
-            } finally {
-                setIsLoading(false); // Turn off the spinner
-            }
-        };
-
-        fetchUsers();
-    }, [currentPage]); // Dependency array: Re-run this effect WHENEVER currentPage changes
-
-    // --- RENDER ---
-    return (
-        <div className="table-container" style={{ padding: '20px', background: '#fff', borderRadius: '8px' }}>
-            <h2>User Management</h2>
-
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '15px' }}>
-                <thead>
-                    <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0', textAlign: 'left' }}>
-                        <th style={{ padding: '10px' }}>ID</th>
-                        <th style={{ padding: '10px' }}>Name</th>
-                        <th style={{ padding: '10px' }}>Email</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {/* 3. CONDITIONAL RENDERING: The Localized Loading State */}
-                    {isLoading ? (
-                        <tr>
-                            <td colSpan={3} style={{ textAlign: 'center', padding: '40px', color: 'var(--text-lo)' }}>
-                                {/* You can replace this text with a CSS spinner or SVG icon */}
-                                ⏳ Loading users...
-                            </td>
-                        </tr>
-                    ) : users.length === 0 ? (
-                        <tr>
-                            <td colSpan={3} style={{ textAlign: 'center', padding: '40px' }}>
-                                No users found.
-                            </td>
-                        </tr>
-                    ) : (
-                        // 4. THE FOREACH LOOP: Mapping the data to table rows
-                        users.map((user) => (
-                            <tr key={user.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                                <td style={{ padding: '10px' }}>{user.id}</td>
-                                <td style={{ padding: '10px' }}>{user.name}</td>
-                                <td style={{ padding: '10px' }}>{user.email}</td>
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
-
-            {/* 5. PAGINATION CONTROLS */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
-                <button
-                    onClick={() => setCurrentPage(prev => prev - 1)}
-                    disabled={currentPage === 1 || isLoading}
-                    className="btn"
-                >
-                    &laquo; Previous
-                </button>
-
-                <span style={{ color: 'var(--text-lo)' }}>
-                    Page {currentPage} of {lastPage}
-                </span>
-
-                <button
-                    onClick={() => setCurrentPage(prev => prev + 1)}
-                    disabled={currentPage === lastPage || isLoading}
-                    className="btn"
-                >
-                    Next &raquo;
-                </button>
-            </div>
+  return (
+    <div style={{ maxWidth: '400px', padding: '20px' }}>
+      <h3>Create New Category</h3>
+      
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="catName" style={{ display: 'block', marginBottom: '5px' }}>
+            Category Name
+          </label>
+          
+          {/* 4. The Controlled Input */}
+          <input
+            id="catName"
+            type="text"
+            value={categoryName} // Bind the value to state
+            onChange={(e) => setCategoryName(e.target.value)} // Update state on every keystroke
+            required
+            disabled={isSubmitting}
+            style={{ width: '100%', padding: '8px' }}
+          />
         </div>
-    );
+
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+          style={{ padding: '10px 15px', background: 'var(--primary)', color: 'white', border: 'none' }}
+        >
+          {isSubmitting ? 'Saving...' : 'Save Category'}
+        </button>
+      </form>
+
+      {message && <p style={{ marginTop: '15px' }}>{message}</p>}
+    </div>
+  );
 }

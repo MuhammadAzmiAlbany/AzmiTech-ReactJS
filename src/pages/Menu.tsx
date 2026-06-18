@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Children } from 'react';
 import Button from "../components/Button";
+import Card from '../components/Card';
+import Table from '../components/Table';
 
 interface MenuStruct {
     id: string;
@@ -51,79 +53,69 @@ export default function Menu() {
             <div className="page-hdr">
                 <div className="page-hdr-left">
                     <h1>Menu Page</h1>
-                    <p>List menu</p>
+                    <p>Data data menu sidebar</p>
                 </div>
                 <div className="page-hdr-right">
-                    <Button link="/menu" type="primary" label="+ Tambah Data"></Button>
+                    <Button link="/menu" type="success" label="+ Tambah Data"></Button>
                 </div>
             </div>
             <div className="row">
                 <div className="col-12 col-md-12">
-                    <div className="card">
-                        <div className="card-hdr">
-                            <div className="card-hdr-txt">
-                                <div className="card-title">Recent Transactions</div>
-                                <div className="card-sub">
-                                    Latest payment activity across all accounts
-                                </div>
-                            </div>
-                            <span className="card-tag">Live</span>
-                        </div>
-                        <div className="card-body" style={{ paddingTop: 0, paddingBottom: 0 }}>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead>
+                    <Card title='Menu List' subtitle='Data data menu sidebar' >
+                        <Table
+                            header={
+                                <tr>
+                                    <th>Id Menu</th>
+                                    <th>Name</th>
+                                    <th>Path</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            }
+                            body={
+                                <>
+                                    {isLoading ? (
                                         <tr>
-                                            <th>Id Menu</th>
-                                            <th>Name</th>
-                                            <th>Path</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <td colSpan={5} style={{ textAlign: "center" }}>
+                                                <strong>Data Kosong</strong>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {isLoading ? (
+                                    )
+                                        :
+                                        (menus.length === 0 || error) ? (
                                             <tr>
-                                                <td colSpan={5} style={{textAlign: "center"}}>
+                                                <td colSpan={5} style={{ textAlign: "center" }}>
                                                     <strong>Data Kosong</strong>
                                                 </td>
-                                            </tr>
-                                        )
-                                            :
-                                            (menus.length === 0 || error) ? (
-                                                <tr>
-                                                    <td colSpan={5} style={{textAlign: "center"}}>
-                                                        <strong>Data Kosong</strong>
-                                                    </td>
-                                                </tr>)
-                                                : (
-                                                    menus.map((menu) => (
-                                                        <tr key={menu.id}>
-                                                            <td>
-                                                                <strong>{menu.id}</strong>
-                                                            </td>
-                                                            <td>
-                                                                <strong>{menu.name}</strong>
-                                                            </td>
-                                                            <td>{menu.path}</td>
-                                                            <td>
-                                                                <span className={"pill " + (menu.status == 1 ? 'ok' : 'bad')}>
-                                                                    <span className="pill-dot" />
-                                                                    {(menu.status == 1 ? 'Actived' : 'Deactived')}
-                                                                </span>
-                                                            </td>
-                                                            <td className='cs-row'>
-                                                                <Button link="/menu" type="warning" label="Edit"></Button>
-                                                                <Button link="/menu" type="danger" label="Delete"></Button>
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                                            </tr>)
+                                            : (
+                                                menus.map((menu) => (
+                                                    <tr key={menu.id}>
+                                                        <td>
+                                                            <strong>{menu.id}</strong>
+                                                        </td>
+                                                        <td>
+                                                            <strong>{menu.name}</strong>
+                                                        </td>
+                                                        <td>{menu.path}</td>
+                                                        <td>
+                                                            <span className={"pill " + (menu.status == 1 ? 'ok' : 'bad')}>
+                                                                <span className="pill-dot" />
+                                                                {(menu.status == 1 ? 'Actived' : 'Deactived')}
+                                                            </span>
+                                                        </td>
+                                                        <td className='cs-row'>
+                                                            <Button link={"/menu/" + menu.id + "/edit"} type="warning" label="Edit"></Button>
+                                                            <Button link={"/menu/"} type="danger" label="Delete"></Button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
+                                </>
+                            }
+                        />
+                    </Card>
                 </div>
             </div>
         </>
