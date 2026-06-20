@@ -57,7 +57,7 @@ export default function Dashboard() {
             <div className="row">
                 <div className="col-6 col-lg-3">
                     <div className="stat-card">
-                        <div
+                        {/* <div
                             className="stat-icon"
                             style={{ background: "rgba(235,94,40,.12)" }}
                         >
@@ -74,11 +74,11 @@ export default function Dashboard() {
                                 <line x1={12} y1={1} x2={12} y2={23} />
                                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                             </svg>
-                        </div>
+                        </div> */}
                         <div className="stat-body">
                             <div className="stat-num">$128.4K</div>
                             <div className="stat-lbl">Total Revenue</div>
-                            <span className="stat-trend up">↑ 12.4% vs last month</span>
+                            {/* <span className="stat-trend up">↑ 12.4% vs last month</span> */}
                         </div>
                     </div>
                 </div>

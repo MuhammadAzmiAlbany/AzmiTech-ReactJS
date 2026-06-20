@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, SubmitEventHandler } from "react";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface FormFields {
@@ -35,8 +35,8 @@ export default function ApiPostForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // ← Prevents redirect / page reload
+  const handleSubmit = async (e: SubmitEventHandler<HTMLFormElement>) => {
+    // e.preventDefault(); // ← Prevents redirect / page reload
 
     setStatus("loading");
     setResponse(null);
