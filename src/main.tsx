@@ -14,6 +14,7 @@ import './css/root.css'
 import './css/theme-mapping.css'
 import './css/main.css'
 import './ts/main'
+import MenuEdit from './pages/MenuEdit';
 
 
 createRoot(document.getElementById('root')!).render(
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/users" element={<Users />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/menu/create" element={<MenuCreate />} />
+          <Route path="/menu/:id/edit" element={<MenuEdit />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<h2>404 - Page Not Found</h2>} />
         </Routes>

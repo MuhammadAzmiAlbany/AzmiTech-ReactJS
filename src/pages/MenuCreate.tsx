@@ -1,22 +1,14 @@
 import Button from "../components/Button";
 import Card from '../components/Card';
-import Select from '../components/form/Select';
 import Input from "../components/form/Input";
-
-interface MenuStruct {
-    id: string;
-    name: string;
-    path: string;
-    status: number;
-}
 
 export default function MenuCreate() {
     return (
         <>
             <div className="page-hdr">
                 <div className="page-hdr-left">
-                    <h1>Menu Page</h1>
-                    <p>Data data menu sidebar</p>
+                    <h1>Menu Create</h1>
+                    <p>Tambah data menu</p>
                     {/* <Select label='List Parent Menu' placeholder='<=== Pilih Menu ===>' optionList={menus} /> */}
                 </div>
                 <div className="page-hdr-right">
@@ -31,7 +23,7 @@ export default function MenuCreate() {
                                 <Input typeInput="text" id="name" name="name" label="Nama Menu" placeholder="Masukkan nama menu" />
                             </div>
                             <div className="col-12 col-md-6">
-                                <Input typeInput="text" id="name" name="name" label="Nama Menu" placeholder="Masukkan nama menu" />
+                                <Input typeInput="text" id="path" name="path" label="Path Menu" placeholder="Masukkan path menu" />
                             </div>
                             <div className="col-12 col-md-12">
                                 <Button link="/menu" type="success" label="+ Tambah Data" />

@@ -4,10 +4,11 @@ interface InputProps {
     addClass?: string,
     typeInput: string,
     label: string,
-    placeholder: string
+    placeholder: string,
+    value?: string
 }
 
-export default function Input({ typeInput, id, name, addClass, label, placeholder }: InputProps) {
+export default function Input({ typeInput, id, name, addClass, label, placeholder, value = "" }: InputProps) {
     return (
         <>
             <div className="fg">
@@ -31,6 +32,7 @@ export default function Input({ typeInput, id, name, addClass, label, placeholde
                     <input
                         id={id}
                         name={name}
+                        value={value}
                         type={typeInput}
                         className={"fi " + addClass}
                         placeholder={placeholder}
