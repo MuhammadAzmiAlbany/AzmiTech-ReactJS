@@ -1,4 +1,5 @@
-import { useState, ChangeEvent, SubmitEventHandler } from "react";
+import type { ChangeEvent, SubmitEventHandler } from "react";
+import { useState } from "react";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface FormFields {

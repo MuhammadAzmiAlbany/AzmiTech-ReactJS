@@ -1,16 +1,16 @@
-import { NavLink } from 'react-router-dom';
-
 interface ButtonProps {
-    type: string,
-    link: string,
-    label?: string,
+    onConfirmDelete: (id: string) => void;
+    id: string,
     size?: string,
 }
 
-export default function Button({ type, link, label = 'Default', size = '' }: ButtonProps) {
+export default function ButtonDelete({ onConfirmDelete, id, size = '' }: ButtonProps) {
     return (
         <>
-            <NavLink to={link} className={"btn btn-" + type + ' btn-' + size}>{label}</NavLink>
+            <button
+                onClick={() => onConfirmDelete(id)}
+                className={'btn btn-danger btn-' + size}>Delete
+            </button>
             {/* <NavLink to={link} className="btn btn-secondary">{label}</NavLink>
             <NavLink to={link} className="btn btn-outline">{label}</NavLink>
             <NavLink to={link} className="btn btn-ghost">{label}</NavLink>
